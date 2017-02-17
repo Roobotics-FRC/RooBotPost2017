@@ -14,7 +14,7 @@ public class GearIntakeCommand extends Command {
 
     public GearIntakeCommand() {
         super();
-        gearIntake = GearIntake.getGearIntake();
+        requires(gearIntake = GearIntake.getGearIntake());
     }
 
     @Override
