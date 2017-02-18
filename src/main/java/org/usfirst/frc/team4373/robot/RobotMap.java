@@ -25,5 +25,5 @@ public class RobotMap {
     public static final int MIDDLE_DRIVE_MOTOR_2 = 7;
     // TODO: Insert correct climber port
     public static final int CLIMBER_MOTOR_1 = 9;
-    public static final int CLIMBER_MOTOR_2 = 8;
+    public static final int CLIMBER_MOTOR_2 = 10;
 }
