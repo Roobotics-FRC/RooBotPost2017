@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
+import org.usfirst.frc.team4373.robot.commands.teleop.GearIntakeCommand;
 
 /**
  * Created by jrr6 on 2/16/17.
@@ -57,6 +58,6 @@ public class GearIntake extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-//        setDefaultCommand(new GearIntakeCommand());
+        setDefaultCommand(new GearIntakeCommand());
     }
 }
