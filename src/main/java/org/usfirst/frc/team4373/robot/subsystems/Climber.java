@@ -36,7 +36,7 @@ public class Climber extends Subsystem {
      * Start the motor spinning forward.
      * @param power The power, from 0 to 1, to supply to the motor.
      */
-    public void setForward(int power) {
+    public void setForward(double power) {
         climberTalon1.set(power);
     }
 
@@ -44,7 +44,7 @@ public class Climber extends Subsystem {
      * Start the motor spinning backward.
      * @param power The power, from 0 to 1, to supply to the motor.
      */
-    public void setBackward(int power) {
+    public void setBackward(double power) {
         climberTalon1.set(-power);
     }
 
@@ -57,6 +57,6 @@ public class Climber extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-         setDefaultCommand(new ClimberCommand());
+        setDefaultCommand(new ClimberCommand());
     }
 }

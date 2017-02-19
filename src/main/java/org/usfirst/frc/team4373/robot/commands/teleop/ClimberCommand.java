@@ -15,6 +15,9 @@ public class ClimberCommand extends Command {
     private RooJoystick joystick;
     private Climber climber;
 
+    /**
+     * Initialize the class.
+     */
     public ClimberCommand() {
         super("ClimberCommand");
         requires(this.climber = Climber.getClimber());
@@ -28,10 +31,8 @@ public class ClimberCommand extends Command {
 
     @Override
     protected void execute() {
-        if (joystick.getRawButton(RobotMap.JOYSTICK_CLIMB_FORWARD_BUTTON)) {
+        if (joystick.getRawButton(RobotMap.JOYSTICK_CLIMBER_BUTTON)) {
             climber.setForward(1);
-        } else if (joystick.getRawButton(RobotMap.JOYSTICK_CLIMB_REVERSE_BUTTON)) {
-            climber.setBackward(1);
         } else {
             climber.stop();
         }

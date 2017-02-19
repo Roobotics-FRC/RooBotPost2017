@@ -3,6 +3,7 @@ package org.usfirst.frc.team4373.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4373.robot.subsystems.Climber;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 /**
@@ -18,6 +19,7 @@ public class Robot extends IterativeRobot {
 
         OI.getOI().getGyro().calibrate();
         DriveTrain.getDriveTrain();
+        Climber.getClimber();
     }
 
     @Override
