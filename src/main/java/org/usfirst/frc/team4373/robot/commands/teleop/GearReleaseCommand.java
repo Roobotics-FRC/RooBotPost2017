@@ -3,31 +3,31 @@ package org.usfirst.frc.team4373.robot.commands.teleop;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team4373.robot.OI;
 import org.usfirst.frc.team4373.robot.RobotMap;
-import org.usfirst.frc.team4373.robot.subsystems.GearIntake;
+import org.usfirst.frc.team4373.robot.subsystems.GearRelease;
 
 /**
- * A command to control the gear intake subsystem.
+ * A command to control the gear release subsystem.
  * @author aaplmath
  */
-public class GearIntakeCommand extends Command {
-    private GearIntake gearIntake;
+public class GearReleaseCommand extends Command {
+    private GearRelease gearRelease;
 
-    public GearIntakeCommand() {
+    public GearReleaseCommand() {
         super();
-        requires(gearIntake = GearIntake.getGearIntake());
+        requires(gearRelease = GearRelease.getGearRelease());
     }
 
     @Override
     protected void initialize() {
-        gearIntake.startCompressor();
+        gearRelease.startCompressor();
     }
 
     @Override
     protected void execute() {
         if (OI.getOI().getDriveJoystick().getRawButton(RobotMap.GEAR_INTAKE_UP_BUTTON)) {
-            gearIntake.raise();
+            gearRelease.activate();
         } else {
-            gearIntake.lower();
+            gearRelease.deactivate();
         }
     }
 
@@ -38,11 +38,11 @@ public class GearIntakeCommand extends Command {
 
     @Override
     protected void end() {
-        this.gearIntake.stop();
+        this.gearRelease.setNeutral();
     }
 
     @Override
     protected void interrupted() {
-        this.gearIntake.stop();
+        this.gearRelease.setNeutral();
     }
 }
