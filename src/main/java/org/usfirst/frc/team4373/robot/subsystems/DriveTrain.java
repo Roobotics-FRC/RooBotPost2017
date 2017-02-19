@@ -53,16 +53,6 @@ public class DriveTrain extends Subsystem {
     }
 
     /**
-     * Sets power to the motors.
-     * @param forward The forward power (-1=backward to 1=forward).
-     * @param right The left/right power (-1=left to 1=right).
-     */
-    public void move(double forward, double right) {
-        // TODO: Determine appropriate amount of power to deliver to right/left motors
-        this.middle1.set(right);
-    }
-
-    /**
      * Sets power to the left motors.
      * @param power The power to allocate to the left motors from -1 to 1.
      */
