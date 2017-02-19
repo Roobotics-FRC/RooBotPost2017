@@ -108,13 +108,19 @@ public class DriveTrain extends Subsystem {
             case FORWARD:
                 this.right1.set(0.5d);
                 this.left1.set(0.5d);
+                break;
             case BACKWARD:
                 this.right1.set(-0.5d);
                 this.left1.set(-0.5d);
+                break;
             case RIGHT:
                 this.middle1.set(0.5d);
+                break;
             case LEFT:
                 this.middle1.set(-0.5d);
+                break;
+            default:
+                break;
         }
         this.right1.changeControlMode(origControlMode);
         this.left1.changeControlMode(origControlMode);

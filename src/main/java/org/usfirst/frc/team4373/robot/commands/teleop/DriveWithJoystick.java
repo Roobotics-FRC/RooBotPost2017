@@ -42,6 +42,7 @@ public class DriveWithJoystick extends PIDCommand {
         driveTrain = DriveTrain.getDriveTrain();
         joystick = OI.getOI().getDriveJoystick();
         cooldown = new AtomicBoolean(false);
+        forwardDirection = Direction.FORWARD;
     }
 
     @Override
@@ -65,6 +66,8 @@ public class DriveWithJoystick extends PIDCommand {
                 case 270:
                     forwardDirection = Direction.LEFT;
                     break;
+                default:
+                    break;
             }
         }
 
@@ -73,19 +76,21 @@ public class DriveWithJoystick extends PIDCommand {
         double horizontalAxis = this.joystick.getAxis(RobotMap.JOYSTICK_HORIZONTAL_AXIS);
         double forwardAxis = -this.joystick.getAxis(RobotMap.JOYSTICK_FORWARD_AXIS);
 
+        double temp = forwardAxis;
         switch (forwardDirection) {
             case BACKWARD:
                 forwardAxis = -forwardAxis;
                 horizontalAxis = -horizontalAxis;
-                twistAxis = -twistAxis;
                 break;
             case LEFT:
-                twistAxis = -twistAxis;
-                // fall through because left and right need to switch horizontal and vertical
-            case RIGHT:
-                double temp = forwardAxis;
                 forwardAxis = horizontalAxis;
+                horizontalAxis = -temp;
+                break;
+            case RIGHT:
+                forwardAxis = -horizontalAxis;
                 horizontalAxis = temp;
+                break;
+            default:
                 break;
         }
 
@@ -94,23 +99,35 @@ public class DriveWithJoystick extends PIDCommand {
             switch (forwardDirection) {
                 case FORWARD:
                     driveTrain.bumpToDirection(Direction.LEFT);
+                    break;
                 case BACKWARD:
                     driveTrain.bumpToDirection(Direction.RIGHT);
+                    break;
                 case RIGHT:
                     driveTrain.bumpToDirection(Direction.BACKWARD);
+                    break;
                 case LEFT:
                     driveTrain.bumpToDirection(Direction.FORWARD);
+                    break;
+                default:
+                    break;
             }
         } else if (OI.getOI().getDriveJoystick().getRawButton(6)) {
             switch (forwardDirection) {
                 case FORWARD:
                     driveTrain.bumpToDirection(Direction.RIGHT);
+                    break;
                 case BACKWARD:
                     driveTrain.bumpToDirection(Direction.LEFT);
+                    break;
                 case RIGHT:
                     driveTrain.bumpToDirection(Direction.FORWARD);
+                    break;
                 case LEFT:
                     driveTrain.bumpToDirection(Direction.BACKWARD);
+                    break;
+                default:
+                    break;
             }
         }
 
