@@ -16,9 +16,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author aaplmath
  */
 public class DriveWithJoystick extends PIDCommand {
-    private static double kP = 0.0d;
-    private static double kI = 0.0d;
-    private static double kD = 0.0d;
+    public enum Direction {
+        FORWARD, BACKWARD, RIGHT, LEFT
+    }
+
+    private static double kP = 0.1000d;
+    private static double kI = 0.0001d;
+    private static double kD = 0.0000d;
+
+    private Direction forwardDirection;
 
     private DriveTrain driveTrain;
     private RooJoystick joystick;
@@ -36,6 +42,7 @@ public class DriveWithJoystick extends PIDCommand {
         driveTrain = DriveTrain.getDriveTrain();
         joystick = OI.getOI().getDriveJoystick();
         cooldown = new AtomicBoolean(false);
+        forwardDirection = Direction.FORWARD;
     }
 
     @Override
@@ -45,10 +52,85 @@ public class DriveWithJoystick extends PIDCommand {
         } else {
             OI.getOI().getGyro().reset();
         }
+        if (OI.getOI().getDriveJoystick().getRawButton(1)) {
+            switch (OI.getOI().getDriveJoystick().getPOV()) {
+                case 0:
+                    forwardDirection = Direction.FORWARD;
+                    break;
+                case 90:
+                    forwardDirection = Direction.RIGHT;
+                    break;
+                case 180:
+                    forwardDirection = Direction.BACKWARD;
+                    break;
+                case 270:
+                    forwardDirection = Direction.LEFT;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         // Turn more slowly
         double twistAxis = this.joystick.getAxis(RobotMap.JOYSTICK_TWIST_AXIS) / 2;
         double horizontalAxis = this.joystick.getAxis(RobotMap.JOYSTICK_HORIZONTAL_AXIS);
         double forwardAxis = -this.joystick.getAxis(RobotMap.JOYSTICK_FORWARD_AXIS);
+
+        double temp = forwardAxis;
+        switch (forwardDirection) {
+            case BACKWARD:
+                forwardAxis = -forwardAxis;
+                horizontalAxis = -horizontalAxis;
+                break;
+            case LEFT:
+                forwardAxis = horizontalAxis;
+                horizontalAxis = -temp;
+                break;
+            case RIGHT:
+                forwardAxis = -horizontalAxis;
+                horizontalAxis = temp;
+                break;
+            default:
+                break;
+        }
+
+        // "Bumping"
+        if (OI.getOI().getDriveJoystick().getRawButton(5)) {
+            switch (forwardDirection) {
+                case FORWARD:
+                    driveTrain.bumpToDirection(Direction.LEFT);
+                    break;
+                case BACKWARD:
+                    driveTrain.bumpToDirection(Direction.RIGHT);
+                    break;
+                case RIGHT:
+                    driveTrain.bumpToDirection(Direction.BACKWARD);
+                    break;
+                case LEFT:
+                    driveTrain.bumpToDirection(Direction.FORWARD);
+                    break;
+                default:
+                    break;
+            }
+        } else if (OI.getOI().getDriveJoystick().getRawButton(6)) {
+            switch (forwardDirection) {
+                case FORWARD:
+                    driveTrain.bumpToDirection(Direction.RIGHT);
+                    break;
+                case BACKWARD:
+                    driveTrain.bumpToDirection(Direction.LEFT);
+                    break;
+                case RIGHT:
+                    driveTrain.bumpToDirection(Direction.FORWARD);
+                    break;
+                case LEFT:
+                    driveTrain.bumpToDirection(Direction.BACKWARD);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         if (twistAxis == 0 && forwardAxis != 0) { // Just forward
             double right = forwardAxis;
             double left = forwardAxis;
@@ -90,10 +172,6 @@ public class DriveWithJoystick extends PIDCommand {
         this.setInputRange(-180, 180);
         this.getPIDController().setOutputRange(-1, 1);
 
-        kP = SmartDashboard.getNumber("kP", 0.0d);
-        kI = SmartDashboard.getNumber("kI", 0.0d);
-        kD = SmartDashboard.getNumber("kD", 0.0d);
-
         this.getPIDController().setPID(kP, kI, kD);
 
         cooldown.set(false);
@@ -106,12 +184,14 @@ public class DriveWithJoystick extends PIDCommand {
 
     @Override
     protected void end() {
+        this.getPIDController().reset();
         this.driveTrain.setBoth(0);
         cooldown.set(false);
     }
 
     @Override
     protected void interrupted() {
+        this.getPIDController().reset();
         this.driveTrain.setBoth(0);
         cooldown.set(false);
     }

@@ -12,10 +12,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotInit() {
-        SmartDashboard.putNumber("kP", 0.0d);
-        SmartDashboard.putNumber("kI", 0.0d);
-        SmartDashboard.putNumber("kD", 0.0d);
-
         OI.getOI().getGyro().calibrate();
         DriveTrain.getDriveTrain();
     }
