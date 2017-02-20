@@ -25,8 +25,8 @@ public class GearRelease extends Subsystem {
         super("GearRelease");
         this.solenoid1 = new DoubleSolenoid(
                 RobotMap.PCM_PORT,
-                RobotMap.FORWARD_SOLENOID_PORT,
-                RobotMap.BACKWARD_SOLENOID_PORT
+                RobotMap.BACKWARD_SOLENOID_PORT,
+                RobotMap.FORWARD_SOLENOID_PORT
         );
     }
 
