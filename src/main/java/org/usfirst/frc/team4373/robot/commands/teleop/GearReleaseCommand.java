@@ -9,6 +9,7 @@ import org.usfirst.frc.team4373.robot.subsystems.GearRelease;
 /**
  * A command to control the gear release subsystem.
  * @author aaplmath
+ * @author Henry Pitcairn
  */
 public class GearReleaseCommand extends Command {
     private GearRelease gearRelease;
