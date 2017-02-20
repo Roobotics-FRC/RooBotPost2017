@@ -23,7 +23,11 @@ public class GearRelease extends Subsystem {
 
     private GearRelease() {
         super("GearRelease");
-        this.solenoid1 = new DoubleSolenoid(RobotMap.PCM_PORT, 0, 1);
+        this.solenoid1 = new DoubleSolenoid(
+                RobotMap.PCM_PORT,
+                RobotMap.FORWARD_SOLENOID_PORT,
+                RobotMap.BACKWARD_SOLENOID_PORT
+        );
     }
 
     private void setBoth(DoubleSolenoid.Value value) {

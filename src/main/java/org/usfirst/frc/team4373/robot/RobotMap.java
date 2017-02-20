@@ -23,5 +23,9 @@ public class RobotMap {
     public static final int MIDDLE_DRIVE_MOTOR_1 = 6;
     public static final int MIDDLE_DRIVE_MOTOR_2 = 7;
     public static final int INTAKE_PORT = 1;
+
+    // Pneumatics
     public static final int PCM_PORT = 15;
+    public static final int FORWARD_SOLENOID_PORT = 1;
+    public static final int BACKWARD_SOLENOID_PORT = 0;
 }
