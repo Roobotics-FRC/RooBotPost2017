@@ -13,11 +13,7 @@ import org.usfirst.frc.team4373.robot.commands.teleop.GearReleaseCommand;
  */
 public class GearRelease extends Subsystem {
 
-    private double INTAKE_POWER = 1;
-    private CANTalon motor;
     private DoubleSolenoid solenoid1;
-    private DoubleSolenoid solenoid2;
-    private Compressor compressor;
 
     private static GearRelease gearRelease = null;
 
@@ -28,21 +24,11 @@ public class GearRelease extends Subsystem {
 
     private GearRelease() {
         super("GearRelease");
-        this.motor = new CANTalon(RobotMap.INTAKE_PORT);
-        this.solenoid1 = new DoubleSolenoid(RobotMap.PCM_PORT, 2, 0);
-        this.solenoid2 = new DoubleSolenoid(RobotMap.PCM_PORT, 3, 1);
-        this.compressor = new Compressor(RobotMap.PCM_PORT);
-        this.compressor.setClosedLoopControl(true);
-        startCompressor();
-    }
-
-    public void startCompressor() {
-        this.compressor.start();
+        this.solenoid1 = new DoubleSolenoid(RobotMap.PCM_PORT, 0, 1);
     }
 
     private void setBoth(DoubleSolenoid.Value value) {
         this.solenoid1.set(value);
-        this.solenoid2.set(value);
     }
 
     public void activate() {

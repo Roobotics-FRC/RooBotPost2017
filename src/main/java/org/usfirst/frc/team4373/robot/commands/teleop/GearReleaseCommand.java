@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4373.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.OI;
 import org.usfirst.frc.team4373.robot.RobotMap;
 import org.usfirst.frc.team4373.robot.subsystems.GearRelease;
@@ -19,7 +20,7 @@ public class GearReleaseCommand extends Command {
 
     @Override
     protected void initialize() {
-        gearRelease.startCompressor();
+        this.gearRelease.activate();
     }
 
     @Override
