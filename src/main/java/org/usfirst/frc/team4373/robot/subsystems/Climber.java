@@ -27,9 +27,6 @@ public class Climber extends Subsystem {
 
         this.climberTalon1.enableBrakeMode(false);
         this.climberTalon2.enableBrakeMode(false);
-
-        this.climberTalon2.changeControlMode(CANTalon.TalonControlMode.Follower);
-        this.climberTalon2.set(RobotMap.CLIMBER_MOTOR_1);
     }
 
     /**
@@ -38,21 +35,14 @@ public class Climber extends Subsystem {
      */
     public void setForward(double power) {
         climberTalon1.set(power);
-    }
-
-    /**
-     * Start the motor spinning backward.
-     * @param power The power, from 0 to 1, to supply to the motor.
-     */
-    public void setBackward(double power) {
-        climberTalon1.set(-power);
+        climberTalon2.set(-power);
     }
 
     /**
      * Stop the motor.
      */
     public void stop() {
-        climberTalon1.set(0);
+        setForward(0);
     }
 
     @Override
