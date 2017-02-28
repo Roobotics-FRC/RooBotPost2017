@@ -20,7 +20,7 @@ public class DriveWithJoystick extends PIDCommand {
         FORWARD, BACKWARD, RIGHT, LEFT
     }
 
-    private static double kP = 0.0100d;
+    private static double kP = 0.0000d;
     private static double kI = 0.0000d;
     private static double kD = 0.0000d;
 
