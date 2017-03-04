@@ -31,4 +31,7 @@ public class RobotMap {
     public static final int PCM_PORT = 15;
     public static final int FORWARD_SOLENOID_PORT = 1;
     public static final int BACKWARD_SOLENOID_PORT = 0;
+
+    // misc
+    public static final int TIME_BASED_AUTON_DEFAULT_SECONDS = 7;
 }
