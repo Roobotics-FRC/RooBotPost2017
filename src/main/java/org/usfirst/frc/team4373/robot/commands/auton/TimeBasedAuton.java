@@ -17,14 +17,16 @@ public class TimeBasedAuton extends Command {
     private int timeSeconds;
     private long desiredDurationMillis;
     private boolean isFinished = false;
+    private double motorValue;
 
     private long timeStart;
 
-    public TimeBasedAuton(int time) {
+    public TimeBasedAuton(int time, double motorValue) {
         super();
         requires(driveTrain = DriveTrain.getDriveTrain());
         this.timeSeconds = time;
         this.desiredDurationMillis = this.timeSeconds * this.TO_MILLISECONDS;
+        this.motorValue = motorValue;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class TimeBasedAuton extends Command {
         if (timeStart == 0) timeStart = System.currentTimeMillis();
         SmartDashboard.putNumber("Time remaining", System.currentTimeMillis() - timeStart);
         if (System.currentTimeMillis() - timeStart <= desiredDurationMillis) {
-            driveTrain.setBoth(0.25d);
+            driveTrain.setBoth(this.motorValue);
         } else {
             driveTrain.setBoth(0.0d);
             isFinished = true;
@@ -52,7 +54,7 @@ public class TimeBasedAuton extends Command {
     @Override
     protected void end() {
         timeStart = 0;
-        driveTrain.setBoth(0d);
+        driveTrain.setBoth(0.0d);
     }
 
     @Override
