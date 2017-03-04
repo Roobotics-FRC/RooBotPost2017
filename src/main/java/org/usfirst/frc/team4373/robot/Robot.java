@@ -26,8 +26,7 @@ public class Robot extends IterativeRobot {
         DriveTrain.getDriveTrain();
         Climber.getClimber();
         GearRelease.getGearRelease();
-        SmartDashboard.putString("AutonValueKey", "AutonValueDefault7sec");
-        autonValueKey = (int)SmartDashboard.getNumber("AutonValueKey");
+        autonValueKey = RobotMap.TIME_BASED_AUTON_DEFAULT_SECONDS;
     }
 
     @Override
@@ -38,25 +37,14 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-        //OI.getOI().getGyro().reset();
-        //super.autonomousInit();
         super.autonomousInit();
         OI.getOI().getGyro().reset();
-        if (autonCommand != null) {
-            autonCommand.cancel();
+        if (SmartDashboard.getBoolean("Override Auton Default?", false)) {
+            this.autonValueKey = (int) SmartDashboard.getNumber("Overriden Auton Value:",
+                    RobotMap.TIME_BASED_AUTON_DEFAULT_SECONDS);
         }
-        String command = (String) autonChooser.getSelected();
-        switch (command) {
-            case "TimeBasedAuton":
-                autonCommand = new TimeBasedAuton(this.autonValueKey);
-                break;
-            default:
-                autonCommand = null;
-        }
-        if (autonCommand != null) {
-            autonCommand.start();
-        }
-
+        autonCommand = new TimeBasedAuton(this.autonValueKey);
+        autonCommand.start();
     }
 
     @Override
