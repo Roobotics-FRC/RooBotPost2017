@@ -11,7 +11,7 @@ import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 public class TimeBasedAuton extends Command {
 
 
-    private final int TO_SECONDS = 1000000000;
+    private final int TO_NANOSECONDS = 1000000000;
     private DriveTrain driveTrain;
     private int timeSeconds;
     private long timeNanoseconds;
@@ -21,7 +21,7 @@ public class TimeBasedAuton extends Command {
         super();
         requires(driveTrain = DriveTrain.getDriveTrain());
         this.timeSeconds = time;
-        this.timeNanoseconds = this.timeSeconds * this.TO_SECONDS;
+        this.timeNanoseconds = this.timeSeconds * this.TO_NANOSECONDS;
     }
 
     @Override
@@ -37,6 +37,7 @@ public class TimeBasedAuton extends Command {
             driveTrain.setBoth(0.5);
             timeStop = System.nanoTime();
         } while ((timeStop - timeStart) <= timeNanoseconds);
+        driveTrain.setBoth(0.0);
         isFinished = true;
     }
 
