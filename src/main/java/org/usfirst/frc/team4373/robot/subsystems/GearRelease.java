@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4373.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
@@ -13,6 +14,7 @@ import org.usfirst.frc.team4373.robot.commands.teleop.GearReleaseCommand;
 public class GearRelease extends Subsystem {
 
     private DoubleSolenoid solenoid1;
+    private Compressor compressor;
 
     private static GearRelease gearRelease = null;
 
@@ -28,6 +30,7 @@ public class GearRelease extends Subsystem {
                 RobotMap.BACKWARD_SOLENOID_PORT,
                 RobotMap.FORWARD_SOLENOID_PORT
         );
+        this.compressor = new Compressor(0);
     }
 
     private void setBoth(DoubleSolenoid.Value value) {
@@ -44,6 +47,14 @@ public class GearRelease extends Subsystem {
 
     public void setNeutral() {
         setBoth(DoubleSolenoid.Value.kOff);
+    }
+
+    public void startCompressor() {
+        this.compressor.start();
+    }
+
+    public void stopCompressor() {
+        this.compressor.stop();
     }
 
     @Override

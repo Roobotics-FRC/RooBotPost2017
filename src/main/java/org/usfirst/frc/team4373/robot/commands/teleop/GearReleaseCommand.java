@@ -22,6 +22,7 @@ public class GearReleaseCommand extends Command {
     @Override
     protected void initialize() {
         this.gearRelease.activate();
+        this.gearRelease.startCompressor();
     }
 
     @Override
@@ -43,10 +44,12 @@ public class GearReleaseCommand extends Command {
     @Override
     protected void end() {
         this.gearRelease.setNeutral();
+        this.gearRelease.stopCompressor();
     }
 
     @Override
     protected void interrupted() {
         this.gearRelease.setNeutral();
+        this.gearRelease.stopCompressor();
     }
 }
