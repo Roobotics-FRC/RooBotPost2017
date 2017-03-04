@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author aaplmath
  */
 public class DriveWithJoystick extends PIDCommand {
+
+    private static DriveWithJoystick drive = null;
+
     public enum Direction {
         FORWARD, BACKWARD, RIGHT, LEFT
     }
@@ -36,13 +39,21 @@ public class DriveWithJoystick extends PIDCommand {
     /**
      * Constructor for DriveWithJoystick.
      */
-    public DriveWithJoystick() {
+    private DriveWithJoystick() {
         super("DriveWithJoystick", kP, kI, kD);
         requires(DriveTrain.getDriveTrain());
         driveTrain = DriveTrain.getDriveTrain();
         joystick = OI.getOI().getDriveJoystick();
         cooldown = new AtomicBoolean(false);
         forwardDirection = Direction.FORWARD;
+    }
+
+    public static DriveWithJoystick getDriveWithJoystick() {
+        if(drive == null) {
+            drive = new DriveWithJoystick();
+        }
+
+        return drive;
     }
 
     @Override

@@ -12,10 +12,10 @@ import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 public class TimeBasedAuton extends Command {
 
 
-    private final int TO_NANOSECONDS = 1000000000;
+    private final int TO_MILLISECONDS = 1000;
     private DriveTrain driveTrain;
     private int timeSeconds;
-    private long timeNanoseconds;
+    private long desiredDurationMillis;
     private boolean isFinished = false;
 
     private long timeStart;
@@ -24,20 +24,20 @@ public class TimeBasedAuton extends Command {
         super();
         requires(driveTrain = DriveTrain.getDriveTrain());
         this.timeSeconds = time;
-        this.timeNanoseconds = this.timeSeconds * this.TO_NANOSECONDS;
+        this.desiredDurationMillis = this.timeSeconds * this.TO_MILLISECONDS;
     }
 
     @Override
     protected void initialize() {
-        timeStart = System.nanoTime();
-        SmartDashboard.putBoolean("\tOverride Auton Default?", false);
-        SmartDashboard.putNumber("\tOverriden Auton Value:", 0);
+        timeStart = 0;
     }
 
     @Override
     protected void execute() {
-        if (System.nanoTime() - timeStart <= timeNanoseconds) {
-            driveTrain.setBoth(0.5d);
+        if (timeStart == 0) timeStart = System.currentTimeMillis();
+        SmartDashboard.putNumber("Time remaining", System.currentTimeMillis() - timeStart);
+        if (System.currentTimeMillis() - timeStart <= desiredDurationMillis) {
+            driveTrain.setBoth(0.25d);
         } else {
             driveTrain.setBoth(0.0d);
             isFinished = true;
@@ -51,12 +51,14 @@ public class TimeBasedAuton extends Command {
 
     @Override
     protected void end() {
+        timeStart = 0;
         driveTrain.setBoth(0d);
     }
 
     @Override
     protected void interrupted() {
         // shouldn't be
+        timeStart = 0;
         driveTrain.setBoth(0d);
     }
 }

@@ -15,18 +15,17 @@ import org.usfirst.frc.team4373.robot.subsystems.GearRelease;
  */
 public class Robot extends IterativeRobot {
 
-
-
     private Command autonCommand = null;
     private SendableChooser autonChooser;
     private int autonValueKey;
     @Override
     public void robotInit() {
+        SmartDashboard.putBoolean("\tOverride Auton Default?", false);
+        SmartDashboard.putNumber("\tOverriden Auton Value:", 0);
         OI.getOI().getGyro().calibrate();
         DriveTrain.getDriveTrain();
         Climber.getClimber();
         GearRelease.getGearRelease();
-        autonValueKey = RobotMap.TIME_BASED_AUTON_DEFAULT_SECONDS;
     }
 
     @Override
@@ -39,10 +38,12 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         super.autonomousInit();
         OI.getOI().getGyro().reset();
-        if (SmartDashboard.getBoolean("Override Auton Default?", false)) {
+       if (SmartDashboard.getBoolean("Override Auton Default?", false)) {
             this.autonValueKey = (int) SmartDashboard.getNumber("Overriden Auton Value:",
                     RobotMap.TIME_BASED_AUTON_DEFAULT_SECONDS);
-        }
+       } else {
+            autonValueKey = RobotMap.TIME_BASED_AUTON_DEFAULT_SECONDS;
+       }
         autonCommand = new TimeBasedAuton(this.autonValueKey);
         autonCommand.start();
     }
