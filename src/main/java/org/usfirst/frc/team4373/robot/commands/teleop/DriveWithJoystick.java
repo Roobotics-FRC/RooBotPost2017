@@ -72,9 +72,9 @@ public class DriveWithJoystick extends PIDCommand {
         }
 
         // Turn more slowly
-        double twistAxis = this.joystick.getAxis(RobotMap.JOYSTICK_TWIST_AXIS) / 2;
-        double horizontalAxis = this.joystick.getAxis(RobotMap.JOYSTICK_HORIZONTAL_AXIS);
-        double forwardAxis = -this.joystick.getAxis(RobotMap.JOYSTICK_FORWARD_AXIS);
+        double twistAxis = this.joystick.getAxis(RobotMap.DRIVE_JOYSTICK_TWIST_AXIS) / 2;
+        double horizontalAxis = this.joystick.getAxis(RobotMap.DRIVE_JOYSTICK_HORIZONTAL_AXIS);
+        double forwardAxis = -this.joystick.getAxis(RobotMap.DRIVE_JOYSTICK_FORWARD_AXIS);
 
         double temp = forwardAxis;
         switch (forwardDirection) {
