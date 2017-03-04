@@ -18,15 +18,21 @@ public class OI {
     }
 
     private RooJoystick driveJoystick;
+    private RooJoystick operatorJoystick;
     private Gyro gyro;
 
     private OI() {
-        this.driveJoystick = new RooJoystick(RobotMap.JOYSTICK_PORT, new PiecewiseFilter2());
+        this.driveJoystick = new RooJoystick(RobotMap.DRIVE_JOYSTICK_PORT, new PiecewiseFilter2());
+        this.operatorJoystick = new RooJoystick(RobotMap.OPERATOR_JOYSTICK_PORT);
         this.gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL);
     }
 
     public RooJoystick getDriveJoystick() {
         return this.driveJoystick;
+    }
+
+    public RooJoystick getOperatorJoystick() {
+        return this.operatorJoystick;
     }
 
     public Gyro getGyro() {

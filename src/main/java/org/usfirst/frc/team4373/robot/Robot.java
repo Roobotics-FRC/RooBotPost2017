@@ -16,7 +16,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         OI.getOI().getGyro().calibrate();
         DriveTrain.getDriveTrain();
-        Climber.getClimber();
+        // Climber.getClimber();
         GearRelease.getGearRelease();
     }
 

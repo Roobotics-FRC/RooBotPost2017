@@ -13,7 +13,8 @@ public class RobotMap {
     public static final int OPERATOR_JOYSTICK_GEAR_INTAKE_UP_BUTTON = 4;
 
     // Sensor ports
-    public static final int JOYSTICK_PORT = 0;
+    public static final int DRIVE_JOYSTICK_PORT = 0;
+    public static final int OPERATOR_JOYSTICK_PORT = 1;
     public static final int GYRO_CHANNEL = 0;
 
     // Motor ports
