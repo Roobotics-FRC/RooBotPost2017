@@ -31,7 +31,7 @@ public class ClimberCommand extends Command {
 
     @Override
     protected void execute() {
-        if (joystick.getRawButton(RobotMap.JOYSTICK_CLIMBER_BUTTON)) {
+        if (joystick.getRawButton(RobotMap.OPERATOR_JOYSTICK_CLIMBER_BUTTON)) {
             climber.setForward(1);
         } else {
             climber.stop();
