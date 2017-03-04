@@ -12,7 +12,6 @@ import org.usfirst.frc.team4373.robot.subsystems.Climber;
  */
 public class ClimberCommand extends Command {
 
-    private RooJoystick joystick;
     private Climber climber;
 
     /**
@@ -21,7 +20,6 @@ public class ClimberCommand extends Command {
     public ClimberCommand() {
         super("ClimberCommand");
         requires(this.climber = Climber.getClimber());
-        joystick = OI.getOI().getDriveJoystick();
     }
 
     @Override
@@ -31,8 +29,8 @@ public class ClimberCommand extends Command {
 
     @Override
     protected void execute() {
-        if (joystick.getRawButton(RobotMap.JOYSTICK_CLIMBER_BUTTON)) {
-            climber.setForward(1);
+        if (OI.getOI().getOperatorJoystick().getRawButton(RobotMap.OPERATOR_JOYSTICK_CLIMBER_BUTTON)) {
+            climber.setForward(1d);
         } else {
             climber.stop();
         }
