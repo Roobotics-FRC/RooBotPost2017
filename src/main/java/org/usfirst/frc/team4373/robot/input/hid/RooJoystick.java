@@ -10,7 +10,7 @@ import org.usfirst.frc.team4373.robot.input.filter.IFilter;
  * @author (Henry Pitcairn)
  */
 public class RooJoystick extends Joystick {
-    private static final double DEADZONE = 0.0;
+    private static final double DEADZONE = 0.09;
     private IFilter filter = null;
 
     public RooJoystick(int port, IFilter... filter) {
