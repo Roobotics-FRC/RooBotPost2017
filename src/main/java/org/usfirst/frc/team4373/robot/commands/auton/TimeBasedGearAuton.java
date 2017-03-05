@@ -8,7 +8,7 @@ import org.usfirst.frc.team4373.robot.subsystems.GearRelease;
 /**
  * Autonomously deposits a gear using hard-coded time values
  * @author Henry Pitcairn
- * @author Alex Fang
+ * @author aaplmath
  */
 public class TimeBasedGearAuton extends Command {
     private final int TO_MILLISECONDS = 1000;

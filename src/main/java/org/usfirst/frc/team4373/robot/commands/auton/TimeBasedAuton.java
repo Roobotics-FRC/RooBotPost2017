@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 /**
- * Created by derros on 3/4/17.
- *
+ * Drives forward at a specified speed for a specified amount of time.
  * @author Alex Fang
+ * @author aaplmath
  */
 public class TimeBasedAuton extends Command {
 
