@@ -28,6 +28,13 @@ public class TimeBasedGearAuton extends Command {
         MOVING_AWAY_FROM_PEG
     }
 
+    private static TimeBasedGearAuton timeBasedGearAuton = null;
+    
+    public static TimeBasedGearAuton getTimeBasedGearAuton(int time, double motorValue) {
+        timeBasedGearAuton = timeBasedGearAuton == null ? new TimeBasedGearAuton(time, motorValue) : timeBasedGearAuton;
+        return timeBasedGearAuton;
+    }
+    
     public TimeBasedGearAuton(int time, double motorValue) {
         super();
         requires(driveTrain = DriveTrain.getDriveTrain());

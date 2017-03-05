@@ -21,7 +21,18 @@ public class TimeBasedAuton extends Command {
 
     private long timeStart;
 
-    public TimeBasedAuton(int time, double motorValue) {
+    private static TimeBasedAuton timeBasedAuton = null;
+
+    public static TimeBasedAuton getTimeBasedAuton(int time, double motorValue) {
+        if (timeBasedAuton == null) {
+            timeBasedAuton = new TimeBasedAuton(time, motorValue);
+        } else {
+            timeBasedAuton = timeBasedAuton;
+        }
+        return timeBasedAuton;
+    }
+
+    private TimeBasedAuton(int time, double motorValue) {
         super();
         requires(driveTrain = DriveTrain.getDriveTrain());
         this.timeSeconds = time;
