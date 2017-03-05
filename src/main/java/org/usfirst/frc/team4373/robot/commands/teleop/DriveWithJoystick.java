@@ -10,14 +10,12 @@ import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * This command handles operator control of the drive train subsystem.
+ * This command handles operator control of the driveWithJoystick train subsystem.
  * It sets outputs based on joystick axes.
  * @author Henry Pitcairn
  * @author aaplmath
  */
 public class DriveWithJoystick extends PIDCommand {
-
-    private static DriveWithJoystick drive = null;
 
     public enum Direction {
         FORWARD, BACKWARD, RIGHT, LEFT
@@ -36,9 +34,19 @@ public class DriveWithJoystick extends PIDCommand {
     private final AtomicBoolean cooldown;
     private long cooldownEndTime;
 
+    private static DriveWithJoystick driveWithJoystick = null;
+
     /**
-     * Constructor for DriveWithJoystick.
+     * Gets the singleton instance of DriveWithJoystick.
      */
+    public static DriveWithJoystick getDriveWithJoystick() {
+        if (driveWithJoystick == null) {
+            driveWithJoystick = new DriveWithJoystick();
+        }
+
+        return driveWithJoystick;
+    }
+
     private DriveWithJoystick() {
         super("DriveWithJoystick", kP, kI, kD);
         requires(DriveTrain.getDriveTrain());
@@ -46,14 +54,6 @@ public class DriveWithJoystick extends PIDCommand {
         joystick = OI.getOI().getDriveJoystick();
         cooldown = new AtomicBoolean(false);
         forwardDirection = Direction.FORWARD;
-    }
-
-    public static DriveWithJoystick getDriveWithJoystick() {
-        if(drive == null) {
-            drive = new DriveWithJoystick();
-        }
-
-        return drive;
     }
 
     @Override

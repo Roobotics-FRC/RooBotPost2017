@@ -29,7 +29,8 @@ public class ClimberCommand extends Command {
 
     @Override
     protected void execute() {
-        if (OI.getOI().getOperatorJoystick().getRawButton(RobotMap.OPERATOR_JOYSTICK_CLIMBER_BUTTON)) {
+        if (OI.getOI().getOperatorJoystick()
+                .getRawButton(RobotMap.OPERATOR_JOYSTICK_CLIMBER_BUTTON)) {
             climber.setForward(1d);
         } else {
             climber.stop();
