@@ -34,8 +34,8 @@ public class Climber extends Subsystem {
      * @param power The power, from 0 to 1, to supply to the motor.
      */
     public void setForward(double power) {
-        climberTalon1.set(-power);
-        climberTalon2.set(power);
+        climberTalon1.set(power);
+        climberTalon2.set(-power);
     }
 
     /**
