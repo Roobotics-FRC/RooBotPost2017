@@ -27,7 +27,8 @@ public class GearReleaseCommand extends Command {
 
     @Override
     protected void execute() {
-        if (OI.getOI().getOperatorJoystick().getRawButton(RobotMap.OPERATOR_JOYSTICK_GEAR_INTAKE_UP_BUTTON)) {
+        if (OI.getOI().getOperatorJoystick()
+                .getRawButton(RobotMap.OPERATOR_JOYSTICK_GEAR_INTAKE_UP_BUTTON)) {
             gearRelease.activate();
             SmartDashboard.putBoolean("Pistons", true);
         } else {

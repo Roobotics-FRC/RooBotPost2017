@@ -6,16 +6,18 @@ import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4373.robot.subsystems.GearRelease;
 
 /**
- * Autonomously deposits a gear using hard-coded time values
+ * Autonomously deposits a gear using hard-coded time values.
  * @author Henry Pitcairn
  * @author aaplmath
  */
 public class TimeBasedGearAuton extends Command {
-    private final int TO_MILLISECONDS = 1000;
+    private static final int TO_MILLISECONDS = 1000;
     private DriveTrain driveTrain;
     private GearRelease gearRelease;
     private int timeSeconds;
-    private long moveForwardDuration, releaseDuration, moveBackwardDuration;
+    private long moveForwardDuration;
+    private long releaseDuration;
+    private long moveBackwardDuration;
     private boolean isFinished = false;
     private double motorValue;
     private long timeStart;
@@ -29,13 +31,19 @@ public class TimeBasedGearAuton extends Command {
     }
 
     private static TimeBasedGearAuton timeBasedGearAuton = null;
-    
+
+    /**
+     * Gets the current TimeBasedGearAuton instance with the specified parameters.
+     * @param time The amount of time the motor should run.
+     * @param motorValue The speed (0-1) at which the motor should run.
+     */
     public static TimeBasedGearAuton getTimeBasedGearAuton(int time, double motorValue) {
-        timeBasedGearAuton = timeBasedGearAuton == null ? new TimeBasedGearAuton(time, motorValue) : timeBasedGearAuton;
+        timeBasedGearAuton = timeBasedGearAuton == null
+                ? new TimeBasedGearAuton(time, motorValue) : timeBasedGearAuton;
         return timeBasedGearAuton;
     }
     
-    public TimeBasedGearAuton(int time, double motorValue) {
+    private TimeBasedGearAuton(int time, double motorValue) {
         super();
         requires(driveTrain = DriveTrain.getDriveTrain());
         requires(gearRelease = GearRelease.getGearRelease());
@@ -56,7 +64,7 @@ public class TimeBasedGearAuton extends Command {
     @Override
     protected void execute() {
         SmartDashboard.putNumber("Time remaining", System.currentTimeMillis() - timeStart);
-        switch(state) {
+        switch (state) {
             case WAITING:
                 state = State.MOVING_TOWARD_PEG;
                 break;
@@ -88,6 +96,8 @@ public class TimeBasedGearAuton extends Command {
                     state = State.WAITING;
                     isFinished = true;  
                 }
+                break;
+            default:
                 break;
         }
     }

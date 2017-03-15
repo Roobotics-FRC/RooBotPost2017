@@ -10,9 +10,7 @@ import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
  * @author aaplmath
  */
 public class TimeBasedAuton extends Command {
-
-
-    private final int TO_MILLISECONDS = 1000;
+    private static final int TO_MILLISECONDS = 1000;
     private DriveTrain driveTrain;
     private int timeSeconds;
     private long desiredDurationMillis;
@@ -23,6 +21,11 @@ public class TimeBasedAuton extends Command {
 
     private static TimeBasedAuton timeBasedAuton = null;
 
+    /**
+     * Gets the current TimeBasedAuton instance with the specified parameters.
+     * @param time The amount of time the motor should run.
+     * @param motorValue The speed (0-1) at which the motor should run.
+     */
     public static TimeBasedAuton getTimeBasedAuton(int time, double motorValue) {
         if (timeBasedAuton == null) {
             timeBasedAuton = new TimeBasedAuton(time, motorValue);
