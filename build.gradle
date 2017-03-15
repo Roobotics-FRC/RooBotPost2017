@@ -1,5 +1,5 @@
 group 'org.usfirst.frc.team4373'
-version '1.0'
+version '1.0.1'
 
 import org.gradle.internal.os.OperatingSystem
 
