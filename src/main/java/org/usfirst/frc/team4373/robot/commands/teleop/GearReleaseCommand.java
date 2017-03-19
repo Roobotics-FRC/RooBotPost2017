@@ -21,7 +21,7 @@ public class GearReleaseCommand extends Command {
 
     @Override
     protected void initialize() {
-        this.gearRelease.activate();
+        this.gearRelease.releaseGear();
         this.gearRelease.startCompressor();
     }
 
@@ -29,11 +29,11 @@ public class GearReleaseCommand extends Command {
     protected void execute() {
         if (OI.getOI().getOperatorJoystick()
                 .getRawButton(RobotMap.OPERATOR_JOYSTICK_GEAR_INTAKE_UP_BUTTON)) {
-            gearRelease.activate();
+            gearRelease.releaseGear();
             SmartDashboard.putBoolean("Pistons", true);
         } else {
             SmartDashboard.putBoolean("Pistons", false);
-            gearRelease.deactivate();
+            gearRelease.retainGear();
         }
     }
 

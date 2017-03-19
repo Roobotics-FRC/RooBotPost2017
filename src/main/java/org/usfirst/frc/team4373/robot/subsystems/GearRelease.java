@@ -37,11 +37,11 @@ public class GearRelease extends Subsystem {
         this.solenoid1.set(value);
     }
 
-    public void activate() {
+    public void releaseGear() {
         setBoth(DoubleSolenoid.Value.kForward);
     }
 
-    public void deactivate() {
+    public void retainGear() {
         setBoth(DoubleSolenoid.Value.kReverse);
     }
 

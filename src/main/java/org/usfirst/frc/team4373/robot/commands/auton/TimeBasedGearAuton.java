@@ -80,7 +80,7 @@ public class TimeBasedGearAuton extends Command {
                 break;
             case RELEASING:
                 if (System.currentTimeMillis() - timeStart <= releaseDuration) {
-                    gearRelease.activate();
+                    gearRelease.releaseGear();
                 } else {
                     timeStart = System.currentTimeMillis();
                     state = State.MOVING_AWAY_FROM_PEG;
@@ -91,7 +91,7 @@ public class TimeBasedGearAuton extends Command {
                     driveTrain.setBoth(0.25);
                 } else {
                     driveTrain.setBoth(0.0d);
-                    gearRelease.deactivate();
+                    gearRelease.retainGear();
                     timeStart = 0;
                     state = State.WAITING;
                     isFinished = true;  
