@@ -5,4 +5,4 @@ This is the repository for the code running on the 2017 RooBot.
 
 ## An image of the 2017 RooBot
 
-[RooBotImage.JPG](http://astro.temple.edu/~tug85903/sch_first_roobotics/DSC_6865.JPG)
+![RooBotImage.JPG](http://astro.temple.edu/~tug85903/sch_first_roobotics/DSC_6865.JPG)
