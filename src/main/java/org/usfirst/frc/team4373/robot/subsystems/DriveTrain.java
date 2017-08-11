@@ -79,38 +79,6 @@ public class DriveTrain extends Subsystem {
     }
 
     /**
-     * "Bumps" the robot in the target direction.
-     * @param direction The direction in which to bump the robot.
-     */
-    public void bumpToDirection(Direction direction) {
-        CANTalon.TalonControlMode origControlMode = this.right1.getControlMode();
-        this.right1.changeControlMode(CANTalon.TalonControlMode.Position);
-        this.left1.changeControlMode(CANTalon.TalonControlMode.Position);
-        this.middle1.changeControlMode(CANTalon.TalonControlMode.Position);
-        switch (direction) {
-            case FORWARD:
-                this.right1.set(0.5d);
-                this.left1.set(0.5d);
-                break;
-            case BACKWARD:
-                this.right1.set(-0.5d);
-                this.left1.set(-0.5d);
-                break;
-            case RIGHT:
-                this.middle1.set(0.5d);
-                break;
-            case LEFT:
-                this.middle1.set(-0.5d);
-                break;
-            default:
-                break;
-        }
-        this.right1.changeControlMode(origControlMode);
-        this.left1.changeControlMode(origControlMode);
-        this.middle1.changeControlMode(origControlMode);
-    }
-
-    /**
      * Sets power to both motors simultaneously.
      * @param power The power to allocate to both motors from -1 to 1.
      */

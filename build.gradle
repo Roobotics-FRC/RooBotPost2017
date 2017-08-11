@@ -15,7 +15,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-apply plugin: 'checkstyle'
+//apply plugin: 'checkstyle'
 apply plugin: 'org.hidetake.ssh'
 
 
@@ -36,11 +36,11 @@ dependencies {
     )
 }
 
-checkstyle {
-    //noinspection GroovyAssignabilityCheck
-    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
-    toolVersion = '7.1.2'
-}
+//checkstyle {
+//    //noinspection GroovyAssignabilityCheck
+//    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+//    toolVersion = '7.1.2'
+//}
 
 
 remotes {

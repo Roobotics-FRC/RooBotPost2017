@@ -1,15 +1,16 @@
 package org.usfirst.frc.team4373.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedAuton;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedGearAuton;
-import org.usfirst.frc.team4373.robot.subsystems.Climber;
+import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;
+import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithPID;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team4373.robot.subsystems.GearRelease;
 
 /**
  * This is the main robot class.
@@ -20,6 +21,14 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotInit() {
+
+        // PID tuning
+        SmartDashboard.putNumber("kP", 0.0d);
+        SmartDashboard.putNumber("kI", 0.0d);
+        SmartDashboard.putNumber("kD", 0.0d);
+        SmartDashboard.putBoolean("Reset Gyro?", false);
+        SmartDashboard.putNumber("PID Setpoint", 0);
+
         SmartDashboard.putNumber("Auton Time:", 4);
         SmartDashboard.putNumber("Auton Speed:", 0.5);
 
@@ -31,9 +40,11 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Test Number", 42);
 
         OI.getOI().getGyro().calibrate();
+
         DriveTrain.getDriveTrain();
-        Climber.getClimber();
-        GearRelease.getGearRelease();
+        // Climber.getClimber();
+        // GearRelease.getGearRelease();
+
     }
 
     @Override
@@ -75,7 +86,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("Gyro", OI.getOI().getGyro().getAngle());
+        if (OI.getOI().getDriveJoystick().getRawButton(11)) {
+            Scheduler.getInstance().add(DriveWithPID.getDriveWithPID());
+        }
     }
 
     public String toString() {
