@@ -20,6 +20,7 @@ public class DriveWithPID extends PIDCommand {
 
     private DriveWithPID() {
         super("DriveWithPID", kP, kI, kD);
+        System.out.println("Initialized DWP");
         requires(DriveTrain.getDriveTrain());
         driveTrain = DriveTrain.getDriveTrain();
         setInterruptible(true);
@@ -41,6 +42,8 @@ public class DriveWithPID extends PIDCommand {
 
     @Override
     protected void initialize() {
+        System.out.println("WPI Init DWP");
+        SmartDashboard.putString("HELLO HENRY", "HELLO");
         this.setSetpoint(0);
         this.setInputRange(-180, 180);
         this.getPIDController().setOutputRange(-1, 1);
@@ -48,6 +51,7 @@ public class DriveWithPID extends PIDCommand {
 
     @Override
     protected void execute() {
+        System.out.println("exec DWP");
         if (SmartDashboard.getBoolean("Reset Gyro?", false)) {
             OI.getOI().getGyro().reset();
             SmartDashboard.putBoolean("Reset Gyro?", false);

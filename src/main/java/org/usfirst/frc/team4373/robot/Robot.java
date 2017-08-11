@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4373.robot;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -51,6 +51,8 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         OI.getOI().getGyro().reset();
         super.teleopInit();
+        JoystickButton button = new JoystickButton(OI.getOI().getDriveJoystick(), 11);
+        button.whenActive(DriveWithJoystick.getDriveWithJoystick());
     }
 
     @Override
@@ -86,9 +88,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        if (OI.getOI().getDriveJoystick().getRawButton(11)) {
-            Scheduler.getInstance().add(DriveWithPID.getDriveWithPID());
-        }
     }
 
     public String toString() {
