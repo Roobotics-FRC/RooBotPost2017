@@ -2,6 +2,7 @@ package org.usfirst.frc.team4373.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 /**
@@ -43,6 +44,7 @@ public class VisionPID extends PIDCommand {
 
     @Override
     protected void execute() {
+        SmartDashboard.putNumber("System Time Thing", System.currentTimeMillis());
         this.driveTrain.setLeft(pidOutput);
         this.driveTrain.setRight(-pidOutput);
     }
