@@ -51,8 +51,6 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         OI.getOI().getGyro().reset();
         super.teleopInit();
-        JoystickButton button = new JoystickButton(OI.getOI().getDriveJoystick(), 11);
-        button.whenActive(DriveWithJoystick.getDriveWithJoystick());
     }
 
     @Override
