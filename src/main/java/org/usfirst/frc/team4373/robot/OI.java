@@ -54,4 +54,8 @@ public class OI {
         double angle = getGyro().getAngle();
         return Math.signum(angle) * (Math.abs(angle) % 180);
     }
+
+    public double getAngleAbsolute() {
+        return getGyro().getAngle();
+    }
 }

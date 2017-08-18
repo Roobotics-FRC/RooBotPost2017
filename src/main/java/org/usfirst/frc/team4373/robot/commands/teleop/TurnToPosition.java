@@ -27,7 +27,7 @@ public class TurnToPosition extends PIDCommand {
 
     @Override
     protected double returnPIDInput() {
-        return OI.getOI().getAngleRelative();
+        return OI.getOI().getAngleAbsolute();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class TurnToPosition extends PIDCommand {
         kI = SmartDashboard.getNumber("kI", 0.0d);
         kD = SmartDashboard.getNumber("kD", 0.0d);
         this.getPIDController().setPID(kP, kI, kD);
-        SmartDashboard.putNumber("Gyro value", OI.getOI().getAngleRelative());
+        SmartDashboard.putNumber("Gyro value", OI.getOI().getAngleAbsolute());
         this.setSetpoint(SmartDashboard.getNumber("Angle setpoint", 0));
     }
 
