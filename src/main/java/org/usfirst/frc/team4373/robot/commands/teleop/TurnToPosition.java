@@ -5,31 +5,29 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.OI;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
-public class DriveWithPID extends PIDCommand {
+public class TurnToPosition extends PIDCommand {
     private static double kP = 0.0d;
     private static double kI = 0.0d;
     private static double kD = 0.0d;
     private DriveTrain driveTrain;
     private double pidOutput;
 
-    public static DriveWithPID driveWithPID = null;
+    public static TurnToPosition turnToPosition = null;
 
-    public static DriveWithPID getDriveWithPID() {
-        return driveWithPID == null ? driveWithPID = new DriveWithPID() : driveWithPID;
+    public static TurnToPosition getTurnToPosition() {
+        return turnToPosition == null ? turnToPosition = new TurnToPosition() : turnToPosition;
     }
 
-    private DriveWithPID() {
-        super("DriveWithPID", kP, kI, kD);
-        System.out.println("Initialized DWP");
+    private TurnToPosition() {
+        super("TurnToPosition", kP, kI, kD);
         requires(DriveTrain.getDriveTrain());
         driveTrain = DriveTrain.getDriveTrain();
         setInterruptible(true);
     }
 
-    // @Override
+    @Override
     protected double returnPIDInput() {
-        // return OI.getOI().getAngleRelative();
-        return 0;
+        return OI.getOI().getAngleRelative();
     }
 
     @Override
@@ -43,8 +41,6 @@ public class DriveWithPID extends PIDCommand {
 
     @Override
     protected void initialize() {
-        System.out.println("WPI Init DWP");
-        SmartDashboard.putString("HELLO HENRY", "HELLO");
         this.setSetpoint(0);
         this.setInputRange(-180, 180);
         this.getPIDController().setOutputRange(-1, 1);
@@ -52,17 +48,11 @@ public class DriveWithPID extends PIDCommand {
 
     @Override
     protected void execute() {
-        System.out.println("exec DWP");
-        if (SmartDashboard.getBoolean("Reset Gyro?", false)) {
-            // OI.getOI().getGyro().reset();
-            SmartDashboard.putBoolean("Reset Gyro?", false);
-        }
-        // kP = SmartDashboard.getNumber("kP", 0.0d);
-        // kI = SmartDashboard.getNumber("kI", 0.0d);
-        // kD = SmartDashboard.getNumber("kD", 0.0d);
-        // this.getPIDController().setPID(kP, kI, kD);
-        // this.setSetpoint(SmartDashboard.getNumber("PID Setpoint", 0));
-        // OI.getOI().getGyro().reset();
+        kP = SmartDashboard.getNumber("kP", 0.0d);
+        kI = SmartDashboard.getNumber("kI", 0.0d);
+        kD = SmartDashboard.getNumber("kD", 0.0d);
+        this.getPIDController().setPID(kP, kI, kD);
+        this.setSetpoint(SmartDashboard.getNumber("Angle setpoint", 0));
     }
 
     @Override
@@ -73,6 +63,7 @@ public class DriveWithPID extends PIDCommand {
     @Override
     protected void end() {
         this.getPIDController().reset();
+        OI.getOI().getGyro().reset();
         this.driveTrain.setBoth(0);
     }
 
