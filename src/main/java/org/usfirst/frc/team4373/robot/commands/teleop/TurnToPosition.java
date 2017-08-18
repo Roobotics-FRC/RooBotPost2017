@@ -52,6 +52,7 @@ public class TurnToPosition extends PIDCommand {
         kI = SmartDashboard.getNumber("kI", 0.0d);
         kD = SmartDashboard.getNumber("kD", 0.0d);
         this.getPIDController().setPID(kP, kI, kD);
+        SmartDashboard.putNumber("Gyro value", OI.getOI().getAngleRelative());
         this.setSetpoint(SmartDashboard.getNumber("Angle setpoint", 0));
     }
 
