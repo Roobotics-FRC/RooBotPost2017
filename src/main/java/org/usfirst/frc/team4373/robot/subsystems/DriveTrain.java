@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
 import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;
 import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick.Direction;
+import org.usfirst.frc.team4373.robot.commands.teleop.TurnToPosition;
 
 /**
  * Programmatic representation of physical drive train components.
@@ -89,6 +90,7 @@ public class DriveTrain extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
+        setDefaultCommand(TurnToPosition.getTurnToPosition());
         /*setDefaultCommand(DriveWithJoystick.getDriveWithJoystick());*/
     }
 
