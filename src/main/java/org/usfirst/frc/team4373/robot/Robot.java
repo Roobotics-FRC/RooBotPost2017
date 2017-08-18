@@ -45,6 +45,9 @@ public class Robot extends IterativeRobot {
         // Climber.getClimber();
         // GearRelease.getGearRelease();
 
+
+        JoystickButton button = new JoystickButton(OI.getOI().getDriveJoystick(), 11);
+        button.whenActive(DriveWithJoystick.getDriveWithJoystick());
     }
 
     @Override
