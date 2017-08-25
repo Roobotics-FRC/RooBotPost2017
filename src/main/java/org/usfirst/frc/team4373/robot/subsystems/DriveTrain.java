@@ -90,8 +90,8 @@ public class DriveTrain extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(TurnToPosition.getTurnToPosition());
-        /*setDefaultCommand(DriveWithJoystick.getDriveWithJoystick());*/
+        // setDefaultCommand(TurnToPosition.getTurnToPosition());
+        setDefaultCommand(DriveWithJoystick.getDriveWithJoystick());
     }
 
 }

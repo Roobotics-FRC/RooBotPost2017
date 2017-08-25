@@ -12,6 +12,8 @@ public class TurnToPosition extends PIDCommand {
     private DriveTrain driveTrain;
     private double pidOutput;
 
+    private boolean isFinished = false;
+
     public static TurnToPosition turnToPosition = null;
 
     public static TurnToPosition getTurnToPosition() {
@@ -32,33 +34,35 @@ public class TurnToPosition extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
-        // if (Math.abs(this.pidOutput - this.getSetpoint()) < 0.25) {
-        //     this.pidOutput = 0;
-        // }
+        if (Math.abs(OI.getOI().getAngleRelative() - this.getSetpoint()) < 10 ) {
+            isFinished = true;
+        }
         this.pidOutput = output;
         SmartDashboard.putNumber("PID Output", this.pidOutput);
     }
 
     @Override
     protected void initialize() {
-        this.setSetpoint(90);
+        // this.setSetpoint(90d);
         this.setInputRange(-180, 180);
         this.getPIDController().setOutputRange(-1, 1);
     }
 
     @Override
     protected void execute() {
+        if (isFinished) return;
         kP = SmartDashboard.getNumber("kP", 0.0d);
         kI = SmartDashboard.getNumber("kI", 0.0d);
         kD = SmartDashboard.getNumber("kD", 0.0d);
         this.getPIDController().setPID(kP, kI, kD);
+        SmartDashboard.putNumber("Current Setpoint", this.getSetpoint());
         SmartDashboard.putNumber("Gyro value", OI.getOI().getAngleRelative());
-        this.setSetpoint(SmartDashboard.getNumber("Angle setpoint", 0));
+        this.setSetpoint(SmartDashboard.getNumber("PID Setpoint", 0));
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return this.isFinished;
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedAuton;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedGearAuton;
 import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;
 import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithPID;
+import org.usfirst.frc.team4373.robot.commands.teleop.TurnToPosition;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 /**
@@ -32,6 +33,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Auton Time:", 4);
         SmartDashboard.putNumber("Auton Speed:", 0.5);
 
+        SmartDashboard.putBoolean("TurnToPosition?", false);
+
         autonChooser = new SendableChooser();
         autonChooser.addDefault("Disabled", "disabled");
         autonChooser.addObject("DriveStraight", "driveStraight");
@@ -45,9 +48,6 @@ public class Robot extends IterativeRobot {
         // Climber.getClimber();
         // GearRelease.getGearRelease();
 
-
-        JoystickButton button = new JoystickButton(OI.getOI().getDriveJoystick(), 11);
-        button.whenActive(DriveWithJoystick.getDriveWithJoystick());
     }
 
     @Override
@@ -89,6 +89,10 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        if (SmartDashboard.getBoolean("TurnToPosition?", false)) {
+            Scheduler.getInstance().add(TurnToPosition.getTurnToPosition());
+            SmartDashboard.putBoolean("TurnToPosition?", false);
+        }
     }
 
     public String toString() {
