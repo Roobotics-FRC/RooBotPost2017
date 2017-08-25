@@ -33,7 +33,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Auton Time:", 4);
         SmartDashboard.putNumber("Auton Speed:", 0.5);
 
-        SmartDashboard.putBoolean("TurnToPosition?", false);
+        SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
 
         autonChooser = new SendableChooser();
         autonChooser.addDefault("Disabled", "disabled");
@@ -43,7 +43,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Test Number", 42);
 
         OI.getOI().getGyro().calibrate();
-
+        
         DriveTrain.getDriveTrain();
         // Climber.getClimber();
         // GearRelease.getGearRelease();
@@ -89,9 +89,14 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        if (SmartDashboard.getBoolean("TurnToPosition?", false)) {
-            Scheduler.getInstance().add(TurnToPosition.getTurnToPosition());
-            SmartDashboard.putBoolean("TurnToPosition?", false);
+        if (SmartDashboard.getBoolean("Toggle TurnToPosition?", false)) {
+            Scheduler.getInstance().add(new TurnToPosition());
+            SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
+        }
+        SmartDashboard.putNumber("Gyro value", Math.round(OI.getOI().getAngleRelative() * 1000d) / 1000d);
+        if (SmartDashboard.getBoolean("Reset Gyro?", false)) {
+            OI.getOI().getGyro().reset();
+            SmartDashboard.putBoolean("Reset Gyro?", false);
         }
     }
 

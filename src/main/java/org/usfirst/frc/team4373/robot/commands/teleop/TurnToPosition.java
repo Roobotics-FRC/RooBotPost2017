@@ -14,13 +14,7 @@ public class TurnToPosition extends PIDCommand {
 
     private boolean isFinished = false;
 
-    public static TurnToPosition turnToPosition = null;
-
-    public static TurnToPosition getTurnToPosition() {
-        return turnToPosition == null ? turnToPosition = new TurnToPosition() : turnToPosition;
-    }
-
-    private TurnToPosition() {
+    public TurnToPosition() {
         super("TurnToPosition", kP, kI, kD);
         requires(DriveTrain.getDriveTrain());
         driveTrain = DriveTrain.getDriveTrain();
@@ -34,8 +28,10 @@ public class TurnToPosition extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
-        if (Math.abs(OI.getOI().getAngleRelative() - this.getSetpoint()) < 10 ) {
-            isFinished = true;
+        if (Math.abs(OI.getOI().getAngleRelative() - this.getSetpoint()) < 1) {
+            // TODO: Allow for oscillation
+            // Recommended PID values: P=0.06 P=0.09
+            // isFinished = true;
         }
         this.pidOutput = output;
         SmartDashboard.putNumber("PID Output", this.pidOutput);
@@ -45,7 +41,7 @@ public class TurnToPosition extends PIDCommand {
     protected void initialize() {
         // this.setSetpoint(90d);
         this.setInputRange(-180, 180);
-        this.getPIDController().setOutputRange(-1, 1);
+        this.getPIDController().setOutputRange(-0.2, 0.2);
     }
 
     @Override
@@ -55,9 +51,18 @@ public class TurnToPosition extends PIDCommand {
         kI = SmartDashboard.getNumber("kI", 0.0d);
         kD = SmartDashboard.getNumber("kD", 0.0d);
         this.getPIDController().setPID(kP, kI, kD);
+
+        this.driveTrain.setLeft(this.pidOutput);
+        this.driveTrain.setRight(-this.pidOutput);
+
         SmartDashboard.putNumber("Current Setpoint", this.getSetpoint());
-        SmartDashboard.putNumber("Gyro value", OI.getOI().getAngleRelative());
         this.setSetpoint(SmartDashboard.getNumber("PID Setpoint", 0));
+
+        if (SmartDashboard.getBoolean("Toggle TurnToPosition?", true)) {
+            isFinished = true;
+            SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
+        }
+
     }
 
     @Override
@@ -67,8 +72,9 @@ public class TurnToPosition extends PIDCommand {
 
     @Override
     protected void end() {
-        this.getPIDController().reset();
+        System.out.println("***TurnToPosition terminated***");
         OI.getOI().getGyro().reset();
+        this.getPIDController().reset();
         this.driveTrain.setBoth(0);
     }
 
