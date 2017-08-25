@@ -6,7 +6,7 @@ import org.usfirst.frc.team4373.robot.OI;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 public class TurnToPosition extends PIDCommand {
-    private static double kP = 0.0d;
+    private static double kP = 0.1d;
     private static double kI = 0.0d;
     private static double kD = 0.0d;
     private DriveTrain driveTrain;
@@ -27,21 +27,21 @@ public class TurnToPosition extends PIDCommand {
 
     @Override
     protected double returnPIDInput() {
-        return OI.getOI().getAngleAbsolute();
+        return OI.getOI().getAngleRelative();
     }
 
     @Override
     protected void usePIDOutput(double output) {
-        if (Math.abs(this.pidOutput - this.getSetpoint()) < 0.25) {
-            this.pidOutput = 0;
-        }
+        // if (Math.abs(this.pidOutput - this.getSetpoint()) < 0.25) {
+        //     this.pidOutput = 0;
+        // }
         this.pidOutput = output;
         SmartDashboard.putNumber("PID Output", this.pidOutput);
     }
 
     @Override
     protected void initialize() {
-        this.setSetpoint(0);
+        this.setSetpoint(90);
         this.setInputRange(-180, 180);
         this.getPIDController().setOutputRange(-1, 1);
     }
@@ -52,7 +52,7 @@ public class TurnToPosition extends PIDCommand {
         kI = SmartDashboard.getNumber("kI", 0.0d);
         kD = SmartDashboard.getNumber("kD", 0.0d);
         this.getPIDController().setPID(kP, kI, kD);
-        SmartDashboard.putNumber("Gyro value", OI.getOI().getAngleAbsolute());
+        SmartDashboard.putNumber("Gyro value", OI.getOI().getAngleRelative());
         this.setSetpoint(SmartDashboard.getNumber("Angle setpoint", 0));
     }
 

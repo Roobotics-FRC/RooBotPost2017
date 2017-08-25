@@ -38,7 +38,7 @@ public class DriveWithPID extends PIDCommand {
             this.pidOutput = 0;
         }
         this.pidOutput = output;
-        SmartDashboard.putNumber("PID Output", this.pidOutput);
+        // SmartDashboard.putNumber("PID Output", this.pidOutput);
     }
 
     @Override

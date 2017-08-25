@@ -52,7 +52,10 @@ public class OI {
 
     public double getAngleRelative() {
         double angle = getGyro().getAngle();
-        return Math.signum(angle) * (Math.abs(angle) % 180);
+        double relative = (Math.abs(angle) * 9 / 2) % 180;
+        // TODO: Account for 180° boundary case
+        relative *= Math.signum(angle);
+        return relative;
     }
 
     public double getAngleAbsolute() {

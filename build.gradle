@@ -86,14 +86,14 @@ task deploy(dependsOn: ':build') << {
     ssh.settings {
         knownHosts = allowAnyHosts
     }
-    ssh.run{
-        session(remotes.roborioAdmin) {
-            put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
-            execute "killall -q netconsole-host || :"
-            put from: "${gradle.wpilibAntDir}/netconsole-host", into: '/usr/local/frc/bin'
-            execute "chmod a+x /usr/local/frc/bin/netconsole-host"
-        }
-    }
+//    ssh.run{
+//        session(remotes.roborioAdmin) {
+//            put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
+//            execute "killall -q netconsole-host || :"
+//            put from: "${gradle.wpilibAntDir}/netconsole-host", into: '/usr/local/frc/bin'
+//            execute "chmod a+x /usr/local/frc/bin/netconsole-host"
+//        }
+//    }
     ssh.run {
         session(remotes.roborioStandard) {
             put from: files(jar.getArchivePath().absolutePath), into: '/home/lvuser/FRCUserProgram.jar'
