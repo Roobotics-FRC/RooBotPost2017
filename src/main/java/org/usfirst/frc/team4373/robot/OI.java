@@ -17,9 +17,13 @@ import java.util.concurrent.locks.Lock;
 public class OI {
     private static OI oi = null;
 
+    /**
+     * The getter for the OI singleton.
+     * @return The static OI singleton object.
+     */
     public static OI getOI() {
         if (oi == null) {
-            synchronized(OI.class) {
+            synchronized (OI.class) {
                 if (oi == null) {
                     oi = new OI();
                 }
@@ -50,6 +54,10 @@ public class OI {
         return gyro;
     }
 
+    /**
+     * Gets the gyro angle in degrees.
+     * @return The gyro angle in degrees, -180 to 180.
+     */
     public double getAngleRelative() {
         double angle = getGyro().getAngle();
         double relative = (Math.abs(angle) * 9 / 2) % 180;
@@ -58,6 +66,10 @@ public class OI {
         return relative;
     }
 
+    /**
+     * Gets the gyro angle in native units.
+     * @return The gyro angle, where 20 units = 90 degrees.
+     */
     public double getAngleAbsolute() {
         return getGyro().getAngle();
     }

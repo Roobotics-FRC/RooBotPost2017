@@ -1,15 +1,12 @@
 package org.usfirst.frc.team4373.robot;
 
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedAuton;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedGearAuton;
-import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;
-import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithPID;
 import org.usfirst.frc.team4373.robot.commands.teleop.TurnToPosition;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
@@ -43,7 +40,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Test Number", 42);
 
         OI.getOI().getGyro().calibrate();
-        
+
         DriveTrain.getDriveTrain();
         // Climber.getClimber();
         // GearRelease.getGearRelease();
@@ -93,7 +90,8 @@ public class Robot extends IterativeRobot {
             Scheduler.getInstance().add(new TurnToPosition());
             SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
         }
-        SmartDashboard.putNumber("Gyro value", Math.round(OI.getOI().getAngleRelative() * 1000d) / 1000d);
+        SmartDashboard.putNumber("Gyro value", Math.round(OI.getOI().getAngleRelative()
+                * 1000d) / 1000d);
         if (SmartDashboard.getBoolean("Reset Gyro?", false)) {
             OI.getOI().getGyro().reset();
             SmartDashboard.putBoolean("Reset Gyro?", false);

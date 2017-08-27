@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4373.robot.input.hid;
 
-
 import edu.wpi.first.wpilibj.Joystick;
 import org.usfirst.frc.team4373.robot.input.filter.IFilter;
 

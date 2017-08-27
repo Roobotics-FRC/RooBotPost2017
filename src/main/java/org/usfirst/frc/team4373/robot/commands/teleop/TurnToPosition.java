@@ -14,6 +14,9 @@ public class TurnToPosition extends PIDCommand {
 
     private boolean isFinished = false;
 
+    /**
+     * Constructs a TurnToPosition command.
+     */
     public TurnToPosition() {
         super("TurnToPosition", kP, kI, kD);
         requires(DriveTrain.getDriveTrain());
