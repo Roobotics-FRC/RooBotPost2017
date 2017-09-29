@@ -26,6 +26,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("kD", 0.0d);
         SmartDashboard.putBoolean("Reset Gyro?", false);
         SmartDashboard.putNumber("PID Setpoint", 0);
+        SmartDashboard.putBoolean("Use Vision?", false);
 
         SmartDashboard.putNumber("Auton Time:", 4);
         SmartDashboard.putNumber("Auton Speed:", 0.5);
@@ -90,7 +91,7 @@ public class Robot extends IterativeRobot {
             Scheduler.getInstance().add(new TurnToPosition());
             SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
         }
-        SmartDashboard.putNumber("Gyro value", Math.round(OI.getOI().getAngleRelative()
+        SmartDashboard.putNumber("Gyro_Value", Math.round(OI.getOI().getAngleRelative()
                 * 1000d) / 1000d);
         if (SmartDashboard.getBoolean("Reset Gyro?", false)) {
             OI.getOI().getGyro().reset();

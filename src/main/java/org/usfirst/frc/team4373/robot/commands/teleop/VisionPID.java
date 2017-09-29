@@ -7,7 +7,7 @@ import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 /**
  * PID command that connects to NetworkTables for vision processing.
- * @author (tesla)
+ * @author aaplmath
  */
 public class VisionPID extends PIDCommand {
     private static double kP = 0.1d;

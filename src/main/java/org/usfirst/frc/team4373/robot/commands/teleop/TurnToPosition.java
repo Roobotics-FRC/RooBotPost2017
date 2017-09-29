@@ -2,6 +2,7 @@ package org.usfirst.frc.team4373.robot.commands.teleop;
 
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 import org.usfirst.frc.team4373.robot.OI;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
@@ -31,11 +32,6 @@ public class TurnToPosition extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
-        if (Math.abs(OI.getOI().getAngleRelative() - this.getSetpoint()) < 1) {
-            // TODO: Allow for oscillation
-            // Recommended PID values: P=0.06 P=0.09
-            // isFinished = true;
-        }
         this.pidOutput = output;
         SmartDashboard.putNumber("PID Output", this.pidOutput);
     }
@@ -45,6 +41,17 @@ public class TurnToPosition extends PIDCommand {
         // this.setSetpoint(90d);
         this.setInputRange(-180, 180);
         this.getPIDController().setOutputRange(-0.2, 0.2);
+        if (SmartDashboard.getBoolean("Use Vision?", false)) {
+            try {
+                SmartDashboard.putNumber("PID Setpoint", SmartDashboard.getNumber(
+                        "Camera_Angle_Offset") + OI.getOI().getAngleRelative());
+            } catch (TableKeyNotDefinedException error) {
+                System.err.println("***COULD NOT GET NT VALUE: " + error.getLocalizedMessage()
+                        + "***");
+                this.isFinished = true;
+                return;
+            }
+        }
     }
 
     @Override
@@ -59,11 +66,13 @@ public class TurnToPosition extends PIDCommand {
         this.driveTrain.setRight(-this.pidOutput);
 
         SmartDashboard.putNumber("Current Setpoint", this.getSetpoint());
+
         this.setSetpoint(SmartDashboard.getNumber("PID Setpoint", 0));
 
         if (SmartDashboard.getBoolean("Toggle TurnToPosition?", true)) {
             isFinished = true;
             SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
+            return;
         }
 
     }
