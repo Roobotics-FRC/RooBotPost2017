@@ -16,9 +16,18 @@ import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 public class Robot extends IterativeRobot {
     private Command autonCommand = null;
     private SendableChooser autonChooser = null;
+    private long ttStart = 0L;
+    private long ttEnd = 0L;
+    private long ttAccum = 0L;
+    private long period = 0L;
+    private long ttAvg = 0L;
+
 
     @Override
     public void robotInit() {
+        long tInitStart = 0L;
+        long tInitTime = 0L;
+        tInitStart = System.nanoTime();
 
         // PID tuning
         SmartDashboard.putNumber("kP", 0.0d);
@@ -45,7 +54,8 @@ public class Robot extends IterativeRobot {
         DriveTrain.getDriveTrain();
         // Climber.getClimber();
         // GearRelease.getGearRelease();
-
+        tInitTime = System.nanoTime() - tInitStart;
+        System.out.println("Init time: " + tInitTime);
     }
 
     @Override
@@ -86,6 +96,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
+        ttStart = System.nanoTime();
         Scheduler.getInstance().run();
         if (SmartDashboard.getBoolean("Toggle TurnToPosition?", false)) {
             Scheduler.getInstance().add(new TurnToPosition());
@@ -97,6 +108,13 @@ public class Robot extends IterativeRobot {
             OI.getOI().getGyro().reset();
             SmartDashboard.putBoolean("Reset Gyro?", false);
         }
+        ttEnd = System.nanoTime();
+        long tSpent = ttEnd - ttStart;
+        ttAccum += tSpent;
+        ++period;
+        ttAvg = ttAccum / period;
+        System.out.print("\rtCurrent: "
+                + tSpent + "ns ttAvg: " + ttAvg + "ns iteration:" + period + "\n");
     }
 
     public String toString() {
