@@ -1,11 +1,14 @@
 package org.usfirst.frc.team4373.robot;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;
 import org.usfirst.frc.team4373.robot.input.filter.PiecewiseFilter2;
 import org.usfirst.frc.team4373.robot.input.hid.RooJoystick;
+
+import java.util.concurrent.locks.Lock;
 
 /**
  * OI encapsulates various inputs and outputs.
@@ -14,8 +17,18 @@ import org.usfirst.frc.team4373.robot.input.hid.RooJoystick;
 public class OI {
     private static OI oi = null;
 
+    /**
+     * The getter for the OI singleton.
+     * @return The static OI singleton object.
+     */
     public static OI getOI() {
-        oi = oi == null ? new OI() : oi;
+        if (oi == null) {
+            synchronized (OI.class) {
+                if (oi == null) {
+                    oi = new OI();
+                }
+            }
+        }
         return oi;
     }
 
@@ -27,9 +40,6 @@ public class OI {
         this.driveJoystick = new RooJoystick(RobotMap.DRIVE_JOYSTICK_PORT, new PiecewiseFilter2());
         this.operatorJoystick = new RooJoystick(RobotMap.OPERATOR_JOYSTICK_PORT);
         this.gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL);
-
-        JoystickButton button = new JoystickButton(OI.getOI().getDriveJoystick(), 11);
-        button.whenActive(DriveWithJoystick.getDriveWithJoystick());
     }
 
     public RooJoystick getDriveJoystick() {
@@ -44,8 +54,23 @@ public class OI {
         return gyro;
     }
 
+    /**
+     * Gets the gyro angle in degrees.
+     * @return The gyro angle in degrees, -180 to 180.
+     */
     public double getAngleRelative() {
         double angle = getGyro().getAngle();
-        return Math.signum(angle) * (Math.abs(angle) % 180);
+        double relative = (Math.abs(angle) * 9 / 2) % 180;
+        // TODO: Account for 180° boundary case
+        relative *= Math.signum(angle);
+        return relative;
+    }
+
+    /**
+     * Gets the gyro angle in native units.
+     * @return The gyro angle, where 20 units = 90 degrees.
+     */
+    public double getAngleAbsolute() {
+        return getGyro().getAngle();
     }
 }

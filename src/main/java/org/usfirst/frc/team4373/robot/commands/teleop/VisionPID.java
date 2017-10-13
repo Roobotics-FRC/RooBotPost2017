@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 /**
- * @author (tesla)
- * Created on 8/11/17
+ * PID command that connects to NetworkTables for vision processing.
+ * @author aaplmath
  */
 public class VisionPID extends PIDCommand {
     private static double kP = 0.1d;

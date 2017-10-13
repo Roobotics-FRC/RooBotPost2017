@@ -1,15 +1,13 @@
 package org.usfirst.frc.team4373.robot;
 
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedAuton;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedGearAuton;
-import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;
-import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithPID;
+import org.usfirst.frc.team4373.robot.commands.teleop.TurnToPosition;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 /**
@@ -28,9 +26,12 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("kD", 0.0d);
         SmartDashboard.putBoolean("Reset Gyro?", false);
         SmartDashboard.putNumber("PID Setpoint", 0);
+        SmartDashboard.putBoolean("Use Vision?", false);
 
         SmartDashboard.putNumber("Auton Time:", 4);
         SmartDashboard.putNumber("Auton Speed:", 0.5);
+
+        SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
 
         autonChooser = new SendableChooser();
         autonChooser.addDefault("Disabled", "disabled");
@@ -86,6 +87,16 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        if (SmartDashboard.getBoolean("Toggle TurnToPosition?", false)) {
+            Scheduler.getInstance().add(new TurnToPosition());
+            SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
+        }
+        SmartDashboard.putNumber("Gyro_Value", Math.round(OI.getOI().getAngleRelative()
+                * 1000d) / 1000d);
+        if (SmartDashboard.getBoolean("Reset Gyro?", false)) {
+            OI.getOI().getGyro().reset();
+            SmartDashboard.putBoolean("Reset Gyro?", false);
+        }
     }
 
     public String toString() {

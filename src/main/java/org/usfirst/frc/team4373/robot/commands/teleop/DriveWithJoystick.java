@@ -45,13 +45,12 @@ public class DriveWithJoystick extends Command {
         requires(DriveTrain.getDriveTrain());
         driveTrain = DriveTrain.getDriveTrain();
         joystick = OI.getOI().getDriveJoystick();
-        forwardDirection = Direction.FORWARD;
+        forwardDirection = Direction.BACKWARD; // TODO: Put this back
         setInterruptible(true);
     }
 
     @Override
     protected void execute() {
-        SmartDashboard.putNumber("Gyro", Math.round(OI.getOI().getGyro().getAngle() * 100d) / 100d);
         if (OI.getOI().getDriveJoystick().getRawButton(1)) {
             switch (OI.getOI().getDriveJoystick().getPOV()) {
                 case 0:

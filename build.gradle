@@ -15,7 +15,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-//apply plugin: 'checkstyle'
+apply plugin: 'checkstyle'
 apply plugin: 'org.hidetake.ssh'
 
 
@@ -36,11 +36,11 @@ dependencies {
     )
 }
 
-//checkstyle {
-//    //noinspection GroovyAssignabilityCheck
-//    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
-//    toolVersion = '7.1.2'
-//}
+checkstyle {
+    //noinspection GroovyAssignabilityCheck
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+    toolVersion = '7.1.2'
+}
 
 
 remotes {
@@ -86,14 +86,14 @@ task deploy(dependsOn: ':build') << {
     ssh.settings {
         knownHosts = allowAnyHosts
     }
-    ssh.run{
-        session(remotes.roborioAdmin) {
-            put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
-            execute "killall -q netconsole-host || :"
-            put from: "${gradle.wpilibAntDir}/netconsole-host", into: '/usr/local/frc/bin'
-            execute "chmod a+x /usr/local/frc/bin/netconsole-host"
-        }
-    }
+//    ssh.run{
+//        session(remotes.roborioAdmin) {
+//            put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
+//            execute "killall -q netconsole-host || :"
+//            put from: "${gradle.wpilibAntDir}/netconsole-host", into: '/usr/local/frc/bin'
+//            execute "chmod a+x /usr/local/frc/bin/netconsole-host"
+//        }
+//    }
     ssh.run {
         session(remotes.roborioStandard) {
             put from: files(jar.getArchivePath().absolutePath), into: '/home/lvuser/FRCUserProgram.jar'
