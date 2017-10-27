@@ -15,6 +15,8 @@ public class TurnToPosition extends PIDCommand {
 
     private boolean isFinished = false;
 
+    private boolean useVision = false;
+
     /**
      * Constructs a TurnToPosition command.
      */
@@ -42,15 +44,8 @@ public class TurnToPosition extends PIDCommand {
         this.setInputRange(-180, 180);
         this.getPIDController().setOutputRange(-0.2, 0.2);
         if (SmartDashboard.getBoolean("Use Vision?", false)) {
-            try {
-                SmartDashboard.putNumber("PID Setpoint", SmartDashboard.getNumber(
-                        "Camera_Angle_Offset") + OI.getOI().getAngleRelative());
-            } catch (TableKeyNotDefinedException error) {
-                System.err.println("***COULD NOT GET NT VALUE: " + error.getLocalizedMessage()
-                        + "***");
-                this.isFinished = true;
-                return;
-            }
+            useVision = true;
+            updateSetpointFromSD();
         }
     }
 
@@ -65,8 +60,9 @@ public class TurnToPosition extends PIDCommand {
         this.driveTrain.setLeft(this.pidOutput);
         this.driveTrain.setRight(-this.pidOutput);
 
-        SmartDashboard.putNumber("Current Setpoint", this.getSetpoint());
-
+        if (this.useVision && Math.abs(OI.getOI().getAngleRelative() - this.getSetpoint()) < 0.9) {
+            updateSetpointFromSD();
+        }
         this.setSetpoint(SmartDashboard.getNumber("PID Setpoint", 0));
 
         if (SmartDashboard.getBoolean("Toggle TurnToPosition?", true)) {
@@ -75,6 +71,18 @@ public class TurnToPosition extends PIDCommand {
             return;
         }
 
+    }
+
+    private void updateSetpointFromSD() {
+        try {
+            SmartDashboard.putNumber("PID Setpoint", SmartDashboard.getNumber(
+                    "Camera_Angle_Offset") + OI.getOI().getAngleRelative());
+        } catch (TableKeyNotDefinedException error) {
+            System.err.println("***COULD NOT GET NT VALUE: " + error.getLocalizedMessage()
+                    + "***");
+            this.isFinished = true;
+            return;
+        }
     }
 
     @Override
