@@ -1,14 +1,9 @@
 package org.usfirst.frc.team4373.robot;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;
-import org.usfirst.frc.team4373.robot.input.filter.PiecewiseFilter2;
+import org.usfirst.frc.team4373.robot.input.filter.FineGrainedPiecewiseFilter;
 import org.usfirst.frc.team4373.robot.input.hid.RooJoystick;
-
-import java.util.concurrent.locks.Lock;
 
 /**
  * OI encapsulates various inputs and outputs.
@@ -37,7 +32,7 @@ public class OI {
     private Gyro gyro;
 
     private OI() {
-        this.driveJoystick = new RooJoystick(RobotMap.DRIVE_JOYSTICK_PORT, new PiecewiseFilter2());
+        this.driveJoystick = new RooJoystick(RobotMap.DRIVE_JOYSTICK_PORT, new FineGrainedPiecewiseFilter());
         this.operatorJoystick = new RooJoystick(RobotMap.OPERATOR_JOYSTICK_PORT);
         this.gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL);
     }
