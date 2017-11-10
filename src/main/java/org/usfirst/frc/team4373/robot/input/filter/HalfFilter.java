@@ -2,11 +2,14 @@ package org.usfirst.frc.team4373.robot.input.filter;
 
 /**
  * HalfFilter simply divides input by 2.
+ *
  * @author Henry Pitcairn
+ * @author Rui-Jie Fang
  */
-public class HalfFilter implements IFilter {
+public class HalfFilter implements GenericFilter<Double> {
+
     @Override
-    public Object applyFilter(Object input) {
-        return (Double)input / 2;
+    public Double applyFilter(Double input) {
+        return input / 2;
     }
 }

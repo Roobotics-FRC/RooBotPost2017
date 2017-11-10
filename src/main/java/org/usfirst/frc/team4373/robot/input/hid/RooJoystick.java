@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4373.robot.input.hid;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team4373.robot.input.filter.IFilter;
+import org.usfirst.frc.team4373.robot.input.filter.GenericFilter;
 
 /**
  * This class extends the WPILib Joystick class
@@ -10,14 +10,14 @@ import org.usfirst.frc.team4373.robot.input.filter.IFilter;
  */
 public class RooJoystick extends Joystick {
     private static final double DEADZONE = 0.09;
-    private IFilter filter = null;
+    private GenericFilter filter = null;
 
-    public RooJoystick(int port, IFilter... filter) {
+    public RooJoystick(int port, GenericFilter... filter) {
         super(port);
         this.filter = filter.length > 0 ? filter[0] : null;
     }
 
-    private double filter(double val, IFilter filter) {
+    private double filter(double val, GenericFilter filter) {
         Object ret;
         if (filter == null) {
             if (this.filter == null) {
@@ -35,23 +35,23 @@ public class RooJoystick extends Joystick {
         return Math.abs(input) <= DEADZONE ? 0 : input;
     }
 
-    private double rooGetX(IFilter filter) {
+    private double rooGetX(GenericFilter filter) {
         return this.filter(this.getX(), filter);
     }
 
-    private double rooGetY(IFilter filter) {
+    private double rooGetY(GenericFilter filter) {
         return this.filter(this.getY(), filter);
     }
 
-    private double rooGetZ(IFilter filter) {
+    private double rooGetZ(GenericFilter filter) {
         return this.filter(this.getZ(), filter);
     }
 
-    private double rooGetTwist(IFilter filter) {
+    private double rooGetTwist(GenericFilter filter) {
         return this.filter(this.getTwist(), filter);
     }
 
-    private double rooGetThrottle(IFilter filter) {
+    private double rooGetThrottle(GenericFilter filter) {
         return this.filter(this.getThrottle(), filter);
     }
 
@@ -60,11 +60,11 @@ public class RooJoystick extends Joystick {
         return this.getAxis(axis.value);
     }
 
-    public double getAxis(Joystick.AxisType axis, IFilter... filter) {
+    public double getAxis(Joystick.AxisType axis, GenericFilter... filter) {
         return this.filter(this.getAxis(axis.value), filter.length > 0 ? filter[0] : null);
     }
 
-    public double getAxis(int axis, IFilter... filter) {
+    public double getAxis(int axis, GenericFilter... filter) {
         return this.filter(this.getAxis(axis), filter.length > 0 ? filter[0] : null);
     }
 
