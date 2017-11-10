@@ -3,6 +3,7 @@ package org.usfirst.frc.team4373.robot;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.usfirst.frc.team4373.robot.input.filter.FineGrainedPiecewiseFilter;
+import org.usfirst.frc.team4373.robot.input.filter.GenericFilter;
 import org.usfirst.frc.team4373.robot.input.hid.RooJoystick;
 
 /**
@@ -27,17 +28,17 @@ public class OI {
         return oi;
     }
 
-    private RooJoystick driveJoystick;
+    private RooJoystick<FineGrainedPiecewiseFilter, Double> driveJoystick;
     private RooJoystick operatorJoystick;
     private Gyro gyro;
 
     private OI() {
-        this.driveJoystick = new RooJoystick(RobotMap.DRIVE_JOYSTICK_PORT, new FineGrainedPiecewiseFilter());
-        this.operatorJoystick = new RooJoystick(RobotMap.OPERATOR_JOYSTICK_PORT);
+        this.driveJoystick = new RooJoystick<>(RobotMap.DRIVE_JOYSTICK_PORT, new FineGrainedPiecewiseFilter());
+        this.operatorJoystick = new RooJoystick<>(RobotMap.OPERATOR_JOYSTICK_PORT, new FineGrainedPiecewiseFilter());
         this.gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL);
     }
 
-    public RooJoystick getDriveJoystick() {
+    public RooJoystick<?,?> getDriveJoystick() { // we can use type deduction!
         return this.driveJoystick;
     }
 

@@ -6,53 +6,54 @@ import org.usfirst.frc.team4373.robot.input.filter.GenericFilter;
 /**
  * This class extends the WPILib Joystick class
  * to add deadzone and filter functionality.
+ * <p>
+ * New features:
+ * =============
+ * 1) Generify the class based on filter type, expressed as an upper bound GenericFilter
+ * 2) Rewrite as Singleton
+ * 3) Remove custom filter capabilities
+ *
  * @author (Henry Pitcairn)
+ * @author Rui-Jie Fang
  */
-public class RooJoystick extends Joystick {
+public class RooJoystick<F extends GenericFilter, R extends Double> extends Joystick {
     private static final double DEADZONE = 0.09;
-    private GenericFilter filter = null;
+    private F filter = null;
 
-    public RooJoystick(int port, GenericFilter... filter) {
+
+    public RooJoystick(int port, F filter) {
         super(port);
-        this.filter = filter.length > 0 ? filter[0] : null;
+        this.filter = filter;
     }
 
-    private double filter(double val, GenericFilter filter) {
-        Object ret;
-        if (filter == null) {
-            if (this.filter == null) {
-                ret = val;
-            } else {
-                ret = this.filter.applyFilter(val);
-            }
-        } else {
-            ret = filter.applyFilter(val);
-        }
+    private double filter(double val) throws TypeNotPresentException {
+        R ret = (R) this.filter.applyFilter(val); // We don't know the return type because of type erasure...
         return applyDeadzone((Double) ret);
+
     }
 
     private double applyDeadzone(double input) {
         return Math.abs(input) <= DEADZONE ? 0 : input;
     }
 
-    private double rooGetX(GenericFilter filter) {
-        return this.filter(this.getX(), filter);
+    private double rooGetX() {
+        return this.filter(this.getX());
     }
 
-    private double rooGetY(GenericFilter filter) {
-        return this.filter(this.getY(), filter);
+    private double rooGetY() {
+        return this.filter(this.getY());
     }
 
-    private double rooGetZ(GenericFilter filter) {
-        return this.filter(this.getZ(), filter);
+    private double rooGetZ() {
+        return this.filter(this.getZ());
     }
 
-    private double rooGetTwist(GenericFilter filter) {
-        return this.filter(this.getTwist(), filter);
+    private double rooGetTwist() {
+        return this.filter(this.getTwist());
     }
 
-    private double rooGetThrottle(GenericFilter filter) {
-        return this.filter(this.getThrottle(), filter);
+    private double rooGetThrottle() {
+        return this.filter(this.getThrottle());
     }
 
     @Override
@@ -60,31 +61,25 @@ public class RooJoystick extends Joystick {
         return this.getAxis(axis.value);
     }
 
-    public double getAxis(Joystick.AxisType axis, GenericFilter... filter) {
-        return this.filter(this.getAxis(axis.value), filter.length > 0 ? filter[0] : null);
-    }
-
-    public double getAxis(int axis, GenericFilter... filter) {
-        return this.filter(this.getAxis(axis), filter.length > 0 ? filter[0] : null);
-    }
 
     /**
      * Returns the filtered value of a joystick access.
+     *
      * @param axis the axis to read from
      * @return the filtered value of the axis
      */
     public double getAxis(int axis) {
         switch (axis) {
             case 0:
-                return this.rooGetX(null);
+                return this.rooGetX();
             case 1:
-                return this.rooGetY(null);
+                return this.rooGetY();
             case 2:
-                return this.rooGetZ(null);
+                return this.rooGetZ();
             case 3:
-                return this.rooGetTwist(null);
+                return this.rooGetTwist();
             case 4:
-                return this.rooGetThrottle(null);
+                return this.rooGetThrottle();
             default:
                 return 0.0;
         }
@@ -92,6 +87,7 @@ public class RooJoystick extends Joystick {
 
     /**
      * Gets the angle the joystick is facing relative to neutral.
+     *
      * @return the joystick angle
      */
     public double getAngle() {

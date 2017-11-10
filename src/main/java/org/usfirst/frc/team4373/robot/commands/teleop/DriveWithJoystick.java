@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * It sets outputs based on joystick axes.
  * @author Henry Pitcairn
  * @author aaplmath
+ * @author Rui-Jie Fang - generify
  */
 public class DriveWithJoystick extends Command {
 
@@ -25,7 +26,7 @@ public class DriveWithJoystick extends Command {
     private Direction forwardDirection;
 
     private DriveTrain driveTrain;
-    private RooJoystick joystick;
+    private RooJoystick<?,?> joystick; // We don't know what happens with OI...
 
     private static DriveWithJoystick driveWithJoystick = null;
 
