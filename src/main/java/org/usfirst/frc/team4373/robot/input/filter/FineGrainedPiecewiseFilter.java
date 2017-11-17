@@ -6,7 +6,7 @@ package org.usfirst.frc.team4373.robot.input.filter;
  * @author (tesla)
  * @author Rui-Jie Fang
  */
-public class FineGrainedPiecewiseFilter implements GenericFilter<Double> {
+public class FineGrainedPiecewiseFilter extends DoubleTypeFilter {
 
     @Override
     public Double applyFilter(Double input) {

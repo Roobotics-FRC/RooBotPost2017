@@ -7,13 +7,26 @@ import org.usfirst.frc.team4373.robot.input.hid.RooJoystick;
 
 /**
  * OI encapsulates various inputs and outputs.
+ *
  * @author Henry Pitcairn
  */
 public class OI {
     private static OI oi = null;
+    private RooJoystick<FineGrainedPiecewiseFilter> driveJoystick;
+    private RooJoystick operatorJoystick;
+    private Gyro gyro;
+    private OI() {
+        this.driveJoystick =
+                new RooJoystick<>(RobotMap.DRIVE_JOYSTICK_PORT, new FineGrainedPiecewiseFilter());
+        this.operatorJoystick =
+                new RooJoystick<>(RobotMap.OPERATOR_JOYSTICK_PORT,
+                        new FineGrainedPiecewiseFilter());
+        this.gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL);
+    }
 
     /**
      * The getter for the OI singleton.
+     *
      * @return The static OI singleton object.
      */
     public static OI getOI() {
@@ -27,17 +40,7 @@ public class OI {
         return oi;
     }
 
-    private RooJoystick driveJoystick;
-    private RooJoystick operatorJoystick;
-    private Gyro gyro;
-
-    private OI() {
-        this.driveJoystick = new RooJoystick(RobotMap.DRIVE_JOYSTICK_PORT, new FineGrainedPiecewiseFilter());
-        this.operatorJoystick = new RooJoystick(RobotMap.OPERATOR_JOYSTICK_PORT);
-        this.gyro = new AnalogGyro(RobotMap.GYRO_CHANNEL);
-    }
-
-    public RooJoystick getDriveJoystick() {
+    public RooJoystick getDriveJoystick() { // we can use type deduction!
         return this.driveJoystick;
     }
 
@@ -51,6 +54,7 @@ public class OI {
 
     /**
      * Gets the gyro angle in degrees.
+     *
      * @return The gyro angle in degrees, -180 to 180.
      */
     public double getAngleRelative() {
@@ -63,6 +67,7 @@ public class OI {
 
     /**
      * Gets the gyro angle in native units.
+     *
      * @return The gyro angle, where 20 units = 90 degrees.
      */
     public double getAngleAbsolute() {
