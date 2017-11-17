@@ -26,7 +26,7 @@ public class DriveWithJoystick extends Command {
     private Direction forwardDirection;
 
     private DriveTrain driveTrain;
-    private RooJoystick<?,?> joystick; // We don't know what happens with OI...
+    private RooJoystick joystick; // We don't know what happens with OI...
 
     private static DriveWithJoystick driveWithJoystick = null;
 
