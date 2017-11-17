@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4373.robot.commands.auton.DriveForwardAuton;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedAuton;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedGearAuton;
 import org.usfirst.frc.team4373.robot.commands.teleop.TurnToPosition;
@@ -37,6 +38,7 @@ public class Robot extends IterativeRobot {
         autonChooser.addDefault("Disabled", "disabled");
         autonChooser.addObject("DriveStraight", "driveStraight");
         autonChooser.addObject("RudimentaryGear", "rudimentaryGear");
+        autonChooser.addObject("Drive Straight 5s", "drive5Seconds");
         SmartDashboard.putData("Auton Mode Selector", autonChooser);
         SmartDashboard.putNumber("Test Number", 42);
 
@@ -70,6 +72,9 @@ public class Robot extends IterativeRobot {
                 break;
             case "rudimentaryGear":
                 autonCommand = TimeBasedGearAuton.getTimeBasedGearAuton(autonValueKey, motorValue);
+                break;
+            case "drive5Seconds":
+                autonCommand = new DriveForwardAuton();
                 break;
             default:
                 autonCommand = null;
