@@ -6,7 +6,7 @@ package org.usfirst.frc.team4373.robot.input.filter;
  * @author Henry Pitcairn
  * @author Rui-Jie Fang
  */
-public class HalfFilter implements GenericFilter<Double> {
+public class HalfFilter extends DoubleTypeFilter {
 
     @Override
     public Double applyFilter(Double input) {

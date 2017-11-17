@@ -1,12 +1,11 @@
 package org.usfirst.frc.team4373.robot.input.hid;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.usfirst.frc.team4373.robot.input.filter.GenericFilter;
+import org.usfirst.frc.team4373.robot.input.filter.DoubleTypeFilter;
 
 /**
  * This class extends the WPILib Joystick class
  * to add deadzone and filter functionality.
- * <p>
  * New features:
  * =============
  * 1) Generify the class based on filter type, expressed as an upper bound GenericFilter
@@ -16,7 +15,7 @@ import org.usfirst.frc.team4373.robot.input.filter.GenericFilter;
  * @author (Henry Pitcairn)
  * @author Rui-Jie Fang
  */
-public class RooJoystick<F extends GenericFilter, R extends Double> extends Joystick {
+public class RooJoystick<F extends DoubleTypeFilter> extends Joystick {
     private static final double DEADZONE = 0.09;
     private F filter = null;
 
@@ -26,10 +25,9 @@ public class RooJoystick<F extends GenericFilter, R extends Double> extends Joys
         this.filter = filter;
     }
 
-    private double filter(double val) throws TypeNotPresentException {
-        R ret = (R) this.filter.applyFilter(val); // We don't know the return type because of type erasure...
-        return applyDeadzone((Double) ret);
-
+    private double filter(double val) {
+        // We don't know the return type because of type erasure...
+        return applyDeadzone(this.filter.applyFilter(val));
     }
 
     private double applyDeadzone(double input) {
