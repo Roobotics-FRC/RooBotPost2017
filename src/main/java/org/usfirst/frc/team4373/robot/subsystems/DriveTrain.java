@@ -20,13 +20,24 @@ public class DriveTrain extends Subsystem {
     private CANTalon right2;
     private CANTalon middle1;
     private CANTalon middle2;
-    private boolean hasEncoder;
+    private CANTalon leftEncoderTalon;
+    private CANTalon rightEncoderTalon;
+    private CANTalon middleEncoderTalon;
+    private boolean hasLeftEncoder;
+    private boolean hasRightEncoder;
+    private boolean hasMiddleEncoder;
 
     /**
      * Initializes motors on respective ports, sets break and reverse modes, and sets followers.
      */
     private DriveTrain() {
         super("DriveTrain");
+        hasLeftEncoder = false;
+        hasRightEncoder = false;
+        hasMiddleEncoder = false;
+        this.leftEncoderTalon = null;
+        this.rightEncoderTalon = null;
+        this.middleEncoderTalon = null;
         this.left1 = new CANTalon(RobotMap.LEFT_DRIVE_MOTOR_1);
         this.left2 = new CANTalon(RobotMap.LEFT_DRIVE_MOTOR_2);
         this.right1 = new CANTalon(RobotMap.RIGHT_DRIVE_MOTOR_1);
@@ -34,16 +45,34 @@ public class DriveTrain extends Subsystem {
         this.middle1 = new CANTalon(RobotMap.MIDDLE_DRIVE_MOTOR_1);
         this.middle2 = new CANTalon(RobotMap.MIDDLE_DRIVE_MOTOR_2);
 
-        // set encoders
-        if (this.left1.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
-                == CANTalon.FeedbackDeviceStatus.FeedbackStatusPresent) {
-            this.hasEncoder = true;
-            this.left1.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
-            this.right1.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
-            this.middle1.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
-        } else {
-            this.hasEncoder = false;
+        if (talonHasEncoder(left1)) {
+            this.leftEncoderTalon = left1;
+            this.hasLeftEncoder = true;
+            talonSetEncoder(left1);
+        } else if (talonHasEncoder(left2)) {
+            this.leftEncoderTalon = left2;
+            this.hasLeftEncoder = true;
+            talonSetEncoder(left2);
         }
+        if (talonHasEncoder(right1)) {
+            this.rightEncoderTalon = right1;
+            this.hasRightEncoder = true;
+            talonSetEncoder(right1);
+        } else if (talonHasEncoder(right2)) {
+            this.rightEncoderTalon = right2;
+            this.hasRightEncoder = true;
+            talonSetEncoder(right2);
+        }
+        if (talonHasEncoder(middle1)) {
+            this.middleEncoderTalon = middle1;
+            this.hasMiddleEncoder = true;
+            talonSetEncoder(middle1);
+        } else if (talonHasEncoder(middle2)) {
+            this.middleEncoderTalon = middle2;
+            this.hasMiddleEncoder = true;
+            talonSetEncoder(middle2);
+        }
+
         this.right1.enableBrakeMode(true);
         this.right2.enableBrakeMode(true);
         this.left1.enableBrakeMode(true);
@@ -61,57 +90,96 @@ public class DriveTrain extends Subsystem {
         System.out.println();
     }
 
+    /**
+     * Has encoder
+     */
+    private static boolean talonHasEncoder(CANTalon talon) {
+        return talon.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
+                == CANTalon.FeedbackDeviceStatus.FeedbackStatusPresent;
+    }
+
+    /**
+     * set encoder
+     */
+    private static boolean talonSetEncoder(CANTalon talon) {
+        talon.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
+    }
+
+    public static DriveTrain getDriveTrain() {
+        driveTrain = driveTrain == null ? new DriveTrain() : driveTrain;
+        return driveTrain;
+    }
 
     /**
      * Returns the position (number of revolutions away from 0) of the left motors.
+     *
      * @return The number of rotations (positive or negative) of the left motors.
      */
     public int getLeftEncoderPosition() {
-        return -left1.getEncPosition();
+        return this.hasLeftEncoder ? this.leftEncoderTalon.getEncPosition() : 0;
     }
 
     /**
      * Returns the position (number of revolutions away from 0) of the right motors.
+     *
      * @return The number of rotations (positive or negative) of the right motors.
      */
     public int getRightEncoderPosition() {
-        return right1.getEncPosition();
+        return this.hasRightEncoder ? this.rightEncoderTalon.getEncPosition() : 0;
     }
 
     /**
      * Returns the position (number of revolutions away from 0) of the middle motors.
+     *
      * @return The number of rotations (positive or negative) of the middle motors.
      */
     public int getMiddleEncoderPosition() {
-        return middle1.getEncPosition();
+        return this.hasMiddleEncoder ? this.middleEncoderTalon.getEncPosition() : 0;
     }
 
     /**
      * Gets the number of encoder counts per revolution of the left motors.
+     *
      * @return the number of encoder counts per revolution of the left motors.
      */
     public double getLeftEncoderCPR() {
-        return this.left1.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR);
+        return this.hasLeftEncoder ? this.leftEncoderTalon.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
     }
 
     /**
      * Gets the number of encoder counts per revolution of the right motors.
+     *
      * @return the number of encoder counts per revolution of the right motors.
      */
     public double getRightEncoderCPR() {
-        return this.right1.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR);
+        return this.hasRightEncoder ? this.rightEncoderTalon.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
+    }
+
+    public double getRightEncoderVelocity() {
+        return this.hasRightEncoder ? this.rightEncoderTalon.getParameter(CanTalonJNI.param_t.eEncVel) : 0;
+    }
+
+    public double getLeftEncoderVelocity() {
+        return this.hasLeftEncoder ? this.leftEncoderTalon.getParameter(CanTalonJNI.param_t.eEncVel) : 0;
+    }
+
+
+    public double getMiddleEncoderVelocity() {
+        return this.hasMiddleEncoder ? this.middleEncoderTalon.getParameter(CanTalonJNI.param_t.eEncVel) : 0;
     }
 
     /**
      * Gets the number of encoder counts per revolution of the middle motors.
+     *
      * @return the number of encoder counts per revolution of the middle motors.
      */
     public double getMiddleEncoderCPR() {
-        return this.middle1.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR);
+        return this.hasMiddleEncoder ? this.middleEncoderTalon.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
     }
 
     /**
      * Gets the number of times the left wheels have rotated.
+     *
      * @return the number of times the left wheels have rotated.
      */
     public double getLeftEncoderTurns() {
@@ -120,6 +188,7 @@ public class DriveTrain extends Subsystem {
 
     /**
      * Gets the number of times the right wheels have rotated.
+     *
      * @return the number of times the right wheels have rotated.
      */
     public double getRightEncoderTurns() {
@@ -128,17 +197,37 @@ public class DriveTrain extends Subsystem {
 
     /**
      * Gets the number of times the middle wheels have rotated.
+     *
      * @return the number of times the middle wheels have rotated.
      */
     public double getMiddleEncoderTurns() {
         return getMiddleEncoderPosition() / getMiddleEncoderCPR();
     }
 
+    /**
+     * f*** u checkstyle -->> Add period..
+     */
+    public void printEncoderData() {
+        //    System.out.println("------------------------");
+        //    System.out.println("L Encoder Position:" + this.getLeftEncoderPosition());
+        //    System.out.println("R Encoder Position:" + this.getRightEncoderPosition());
+        //    System.out.println("L Encoder CPR:" + this.getLeftEncoderCPR());
+        //    System.out.println("R Encoder CPR:" + this.getRightEncoderCPR());
+        //    System.out.println("L Encoder Velocity:" + this.getLeftEncoderVelocity());
+        //    System.out.println("R Enocder Velocity:" + this.getRightEncoderVelocity());
+        //    System.out.println("------------------------");
+        //    printTalonData();
+    }
 
-
-    public static DriveTrain getDriveTrain() {
-        driveTrain = driveTrain == null ? new DriveTrain() : driveTrain;
-        return driveTrain;
+    /**
+     * Compl with checkstyle.
+     */
+    public void printTalonData() {
+        System.out.println("-------------------");
+        System.out.println("L Analog Velocity:" + this.left1.getAnalogInVelocity());
+        System.out.println("R Analog Velocity:" + this.right1.getAnalogInVelocity());
+        System.out.println("L Analog Position:" + this.left1.getAnalogInPosition());
+        System.out.println("R Analog Position:" + this.right1.getAnalogInPosition());
     }
 
     /**

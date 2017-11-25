@@ -87,6 +87,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        DriveTrain.getDriveTrain().printEncoderData();
         if (SmartDashboard.getBoolean("Toggle TurnToPosition?", false)) {
             Scheduler.getInstance().add(new TurnToPosition());
             SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
