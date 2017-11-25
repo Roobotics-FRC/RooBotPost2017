@@ -12,7 +12,8 @@ public class RobotMap {
     public static final int DRIVE_JOYSTICK_SHOOTER_AXIS = 3;
     public static final int OPERATOR_JOYSTICK_CLIMBER_BUTTON = 4;
     public static final int OPERATOR_JOYSTICK_GEAR_INTAKE_UP_BUTTON = 3;
-    public static final int OPERATOR_JOYSTICK_SHOOTER_BUTTON = 5;
+    public static final int OPERATOR_JOYSTICK_SHOOTER_BUTTON = 2;
+    public static final int OPERATOR_JOYSTICK_DISPENSER_BUTTON = 3;
 
     // Sensor ports
     public static final int DRIVE_JOYSTICK_PORT = 0;

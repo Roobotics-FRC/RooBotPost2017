@@ -68,10 +68,10 @@ jar {
     }
 }
 
-//noinspection GroovyAssignabilityCheck
-task deploy(dependsOn: ':build') << {
-    def isMacOS = OperatingSystem.current().isMacOsX()
-    def network = ''
+ext.isMacOS = OperatingSystem.current().isMacOsX()
+ext.network = ''
+
+def switchTo4373() {
     if (isMacOS) {
         Process curNetProc = Runtime.getRuntime().exec('networksetup -getairportnetwork en0')
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(curNetProc.getInputStream()))
@@ -83,17 +83,42 @@ task deploy(dependsOn: ':build') << {
             setProc.waitFor()
         }
     }
+}
+
+def switchBack() {
+    if (isMacOS && network != '4373_') {
+        Process resetProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 ' + network)
+        resetProc.waitFor()
+    }
+}
+
+//noinspection GroovyAssignabilityCheck
+task loadLibraries() {
+    switchTo4373()
     ssh.settings {
         knownHosts = allowAnyHosts
     }
-//    ssh.run{
-//        session(remotes.roborioAdmin) {
-//            put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
-//            execute "killall -q netconsole-host || :"
-//            put from: "${gradle.wpilibAntDir}/netconsole-host", into: '/usr/local/frc/bin'
-//            execute "chmod a+x /usr/local/frc/bin/netconsole-host"
-//        }
-//    }
+    ssh.run {
+        session(remotes.roborioAdmin) {
+            put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
+            execute "killall -q netconsole-host || :"
+            put from: "${gradle.wpilibAntDir}/netconsole-host", into: '/usr/local/frc/bin'
+            execute "chmod a+x /usr/local/frc/bin/netconsole-host"
+        }
+    }
+    if (isMacOS && network != '4373_') {
+        Process resetProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 ' + network)
+        resetProc.waitFor()
+    }
+    switchBack()
+}
+
+//noinspection GroovyAssignabilityCheck
+task deploy(dependsOn: ':build') << {
+    switchTo4373()
+    ssh.settings {
+        knownHosts = allowAnyHosts
+    }
     ssh.run {
         session(remotes.roborioStandard) {
             put from: files(jar.getArchivePath().absolutePath), into: '/home/lvuser/FRCUserProgram.jar'
@@ -102,8 +127,5 @@ task deploy(dependsOn: ':build') << {
             execute "sync"
         }
     }
-    if (isMacOS && network != '4373_') {
-        Process resetProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 ' + network)
-        resetProc.waitFor()
-    }
+    switchToBack()
 }
