@@ -32,6 +32,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Auton Time:", 4);
         SmartDashboard.putNumber("Auton Speed:", 0.5);
 
+        SmartDashboard.putNumber("Shooter Power", 1);
+
         SmartDashboard.putBoolean("Toggle TurnToPosition?", false);
 
         autonChooser = new SendableChooser();

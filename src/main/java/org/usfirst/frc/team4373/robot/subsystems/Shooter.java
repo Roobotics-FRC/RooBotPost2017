@@ -3,6 +3,7 @@ package org.usfirst.frc.team4373.robot.subsystems;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
+import org.usfirst.frc.team4373.robot.commands.teleop.ToggleShooterCommand;
 
 public class Shooter extends Subsystem {
 
@@ -19,21 +20,27 @@ public class Shooter extends Subsystem {
     }
 
     /**
-     * Starts the shooter at full power.
+     * Sets the shooter's power to the amount given, between 0 and 1.
+     * @param power The amount, between 0 and 1, to give to the motor.
      */
-    public void start() {
-        shooterTalon.set(1);
+    public void setPower(double power) {
+        if (power < 0) {
+            power = 0;
+        } else if (power > 1) {
+            power = 1;
+        }
+        shooterTalon.set(power);
     }
 
     /**
      * Stops the shooter.
      */
     public void stop() {
-        shooterTalon.set(0);
+        setPower(0);
     }
 
     @Override
     protected void initDefaultCommand() {
-
+        setDefaultCommand(new ToggleShooterCommand());
     }
 }

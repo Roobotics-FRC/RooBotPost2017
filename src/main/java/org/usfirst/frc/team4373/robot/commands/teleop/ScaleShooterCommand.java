@@ -5,11 +5,11 @@ import org.usfirst.frc.team4373.robot.OI;
 import org.usfirst.frc.team4373.robot.RobotMap;
 import org.usfirst.frc.team4373.robot.subsystems.Shooter;
 
-public class ShooterCommand extends Command {
+public class ScaleShooterCommand extends Command {
 
     private Shooter shooter;
 
-    public ShooterCommand() {
+    public ScaleShooterCommand() {
         shooter = Shooter.getShooter();
     }
 
@@ -20,12 +20,8 @@ public class ShooterCommand extends Command {
 
     @Override
     protected void execute() {
-        if (OI.getOI().getOperatorJoystick().getRawButton(
-                RobotMap.OPERATOR_JOYSTICK_SHOOTER_BUTTON)) {
-            this.shooter.start();
-        } else {
-            this.shooter.stop();
-        }
+        this.shooter.setPower(OI.getOI().getDriveJoystick()
+                .getRawAxis(RobotMap.DRIVE_JOYSTICK_SHOOTER_AXIS) + 1);
     }
 
     @Override
