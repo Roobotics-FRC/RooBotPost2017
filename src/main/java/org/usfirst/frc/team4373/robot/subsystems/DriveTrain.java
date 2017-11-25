@@ -91,7 +91,7 @@ public class DriveTrain extends Subsystem {
     }
 
     /**
-     * Has encoder
+     * Has encoder?.
      */
     private static boolean talonHasEncoder(CANTalon talon) {
         return talon.isSensorPresent(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute)
@@ -99,9 +99,9 @@ public class DriveTrain extends Subsystem {
     }
 
     /**
-     * set encoder
+     * set encoder.
      */
-    private static boolean talonSetEncoder(CANTalon talon) {
+    private static void talonSetEncoder(CANTalon talon) {
         talon.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
     }
 
@@ -116,7 +116,8 @@ public class DriveTrain extends Subsystem {
      * @return The number of rotations (positive or negative) of the left motors.
      */
     public int getLeftEncoderPosition() {
-        return this.hasLeftEncoder ? this.leftEncoderTalon.getEncPosition() : 0;
+        return this.hasLeftEncoder
+                ? this.leftEncoderTalon.getEncPosition() : 0;
     }
 
     /**
@@ -125,7 +126,8 @@ public class DriveTrain extends Subsystem {
      * @return The number of rotations (positive or negative) of the right motors.
      */
     public int getRightEncoderPosition() {
-        return this.hasRightEncoder ? this.rightEncoderTalon.getEncPosition() : 0;
+        return this.hasRightEncoder
+                ? this.rightEncoderTalon.getEncPosition() : 0;
     }
 
     /**
@@ -134,7 +136,8 @@ public class DriveTrain extends Subsystem {
      * @return The number of rotations (positive or negative) of the middle motors.
      */
     public int getMiddleEncoderPosition() {
-        return this.hasMiddleEncoder ? this.middleEncoderTalon.getEncPosition() : 0;
+        return this.hasMiddleEncoder
+                ? this.middleEncoderTalon.getEncPosition() : 0;
     }
 
     /**
@@ -143,7 +146,9 @@ public class DriveTrain extends Subsystem {
      * @return the number of encoder counts per revolution of the left motors.
      */
     public double getLeftEncoderCPR() {
-        return this.hasLeftEncoder ? this.leftEncoderTalon.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
+        return this.hasLeftEncoder
+                ? this.leftEncoderTalon
+                        .getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
     }
 
     /**
@@ -152,20 +157,39 @@ public class DriveTrain extends Subsystem {
      * @return the number of encoder counts per revolution of the right motors.
      */
     public double getRightEncoderCPR() {
-        return this.hasRightEncoder ? this.rightEncoderTalon.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
+        return this.hasRightEncoder
+                ? this.rightEncoderTalon
+                        .getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
     }
 
+    /**
+     * Gets the encoder velocity for the right motors.
+     * @return encoder velocity
+     */
     public double getRightEncoderVelocity() {
-        return this.hasRightEncoder ? this.rightEncoderTalon.getParameter(CanTalonJNI.param_t.eEncVel) : 0;
+        return this.hasRightEncoder
+                ? this.rightEncoderTalon
+                        .getParameter(CanTalonJNI.param_t.eEncVel) : 0;
     }
 
+    /**
+     * Gets the encoder velocity for left motors.
+     * @return encoder velocity
+     */
     public double getLeftEncoderVelocity() {
-        return this.hasLeftEncoder ? this.leftEncoderTalon.getParameter(CanTalonJNI.param_t.eEncVel) : 0;
+        return this.hasLeftEncoder
+                ? this.leftEncoderTalon
+                        .getParameter(CanTalonJNI.param_t.eEncVel) : 0;
     }
 
-
+    /**
+     * Gets the encoder velocity for middle motors.
+     * @return encoder velocity
+     */
     public double getMiddleEncoderVelocity() {
-        return this.hasMiddleEncoder ? this.middleEncoderTalon.getParameter(CanTalonJNI.param_t.eEncVel) : 0;
+        return this.hasMiddleEncoder
+                ? this.middleEncoderTalon
+                        .getParameter(CanTalonJNI.param_t.eEncVel) : 0;
     }
 
     /**
@@ -174,7 +198,9 @@ public class DriveTrain extends Subsystem {
      * @return the number of encoder counts per revolution of the middle motors.
      */
     public double getMiddleEncoderCPR() {
-        return this.hasMiddleEncoder ? this.middleEncoderTalon.getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
+        return this.hasMiddleEncoder
+                ? this.middleEncoderTalon
+                        .getParameter(CanTalonJNI.param_t.eNumberEncoderCPR) : 0;
     }
 
     /**
@@ -205,7 +231,7 @@ public class DriveTrain extends Subsystem {
     }
 
     /**
-     * f*** u checkstyle -->> Add period..
+     * Prints encoder data to stdout
      */
     public void printEncoderData() {
         //    System.out.println("------------------------");
@@ -220,7 +246,7 @@ public class DriveTrain extends Subsystem {
     }
 
     /**
-     * Compl with checkstyle.
+     * Prints talon data to stdout
      */
     public void printTalonData() {
         System.out.println("-------------------");
