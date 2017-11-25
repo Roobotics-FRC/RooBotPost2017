@@ -79,25 +79,32 @@ def switchTo4373() {
         network = res.substring(23)
         curNetProc.waitFor()
         if (network != '4373_') {
+            println 'Connecting to 4373…'
             Process setProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 4373_ robotics')
             setProc.waitFor()
+            println 'Connected to 4373'
+        } else {
+            println 'Already connected to 4373'
         }
     }
 }
 
 def switchBack() {
     if (isMacOS && network != '4373_') {
+        println 'Reconnecting to ' + network + '…'
         Process resetProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 ' + network)
         resetProc.waitFor()
+        println 'Reconnected to ' + network
     }
 }
 
 //noinspection GroovyAssignabilityCheck
-task loadLibraries() {
+task loadLibraries << {
     switchTo4373()
     ssh.settings {
         knownHosts = allowAnyHosts
     }
+    println 'Sending library directories over SSH…'
     ssh.run {
         session(remotes.roborioAdmin) {
             put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
@@ -106,10 +113,7 @@ task loadLibraries() {
             execute "chmod a+x /usr/local/frc/bin/netconsole-host"
         }
     }
-    if (isMacOS && network != '4373_') {
-        Process resetProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 ' + network)
-        resetProc.waitFor()
-    }
+    println 'Finished loading libraries'
     switchBack()
 }
 
@@ -119,6 +123,7 @@ task deploy(dependsOn: ':build') << {
     ssh.settings {
         knownHosts = allowAnyHosts
     }
+    println 'Sending compiled code over SSH and restarting robot code…'
     ssh.run {
         session(remotes.roborioStandard) {
             put from: files(jar.getArchivePath().absolutePath), into: '/home/lvuser/FRCUserProgram.jar'
@@ -127,5 +132,6 @@ task deploy(dependsOn: ':build') << {
             execute "sync"
         }
     }
-    switchToBack()
+    println 'Code successfully loaded and started'
+    switchBack()
 }
