@@ -10,6 +10,7 @@ public class ScaleShooterCommand extends Command {
     private Shooter shooter;
 
     public ScaleShooterCommand() {
+        super("ScaleShooterCommand");
         shooter = Shooter.getShooter();
     }
 

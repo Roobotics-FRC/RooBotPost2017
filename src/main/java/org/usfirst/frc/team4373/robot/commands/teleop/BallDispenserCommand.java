@@ -9,6 +9,7 @@ public class BallDispenserCommand extends Command {
     private BallDispenser ballDispenser;
 
     public BallDispenserCommand() {
+        super("BallDispenserCommand");
         requires(this.ballDispenser = BallDispenser.getBallDispenser());
     }
 

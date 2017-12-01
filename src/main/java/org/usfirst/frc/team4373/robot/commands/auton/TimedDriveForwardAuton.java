@@ -1,6 +1,8 @@
 package org.usfirst.frc.team4373.robot.commands.auton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
 public class TimedDriveForwardAuton extends Command {
@@ -12,10 +14,10 @@ public class TimedDriveForwardAuton extends Command {
 
     /**
      * Construct a new TimedDriveForwardAuton command.
-     * @param duration The amount of time, in seconds, for which the robot should drive.
      * @param speed The speed, between 0 and 1, at which the robot should drive.
+     * @param duration The amount of time, in seconds, for which the robot should drive.
      */
-    public TimedDriveForwardAuton(double duration, double speed) {
+    public TimedDriveForwardAuton(double speed, double duration) {
         requires(this.driveTrain = DriveTrain.getDriveTrain());
         this.duration = duration * 1000d;
         if (speed > 1) {
@@ -45,6 +47,9 @@ public class TimedDriveForwardAuton extends Command {
     @Override
     protected void end() {
         this.driveTrain.setBoth(0);
+        Scheduler.getInstance().add(new TimedShootingAuton(
+                SmartDashboard.getNumber("2017 Shoot Speed", 1),
+                SmartDashboard.getNumber("2017 Shoot Delay", 3)));
     }
 
     @Override

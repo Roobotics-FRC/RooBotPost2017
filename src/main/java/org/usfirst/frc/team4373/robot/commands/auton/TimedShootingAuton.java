@@ -12,6 +12,11 @@ public class TimedShootingAuton extends Command {
     private double speed;
     private double pistonDelay;
 
+    /**
+     * Constructs a new TimedShootingAuton class.
+     * @param speed The speed, from 0 to 1, at which the shooter should shoot.
+     * @param pistonDelay The delay between ball releases.
+     */
     public TimedShootingAuton(double speed, double pistonDelay) {
         requires(this.shooter = Shooter.getShooter());
         requires(this.ballDispenser = BallDispenser.getBallDispenser());
