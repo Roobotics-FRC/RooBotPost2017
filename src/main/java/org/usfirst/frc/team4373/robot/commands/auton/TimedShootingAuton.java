@@ -10,14 +10,15 @@ public class TimedShootingAuton extends Command {
     private BallDispenser ballDispenser;
     private long lastBallRelease;
     private double speed;
-    private double pistonDelay;
+    private double pistonInterval;
+    private static final double pistonDelay = 500d;
 
     /**
      * Constructs a new TimedShootingAuton class.
      * @param speed The speed, from 0 to 1, at which the shooter should shoot.
-     * @param pistonDelay The delay between ball releases.
+     * @param pistonInterval The delay between ball releases.
      */
-    public TimedShootingAuton(double speed, double pistonDelay) {
+    public TimedShootingAuton(double speed, double pistonInterval) {
         requires(this.shooter = Shooter.getShooter());
         requires(this.ballDispenser = BallDispenser.getBallDispenser());
         if (speed > 1) {
@@ -28,7 +29,7 @@ public class TimedShootingAuton extends Command {
             this.speed = speed;
         }
         this.speed = speed;
-        this.pistonDelay = pistonDelay;
+        this.pistonInterval = pistonInterval * 1000d;
     }
 
     @Override
@@ -40,10 +41,10 @@ public class TimedShootingAuton extends Command {
 
     @Override
     protected void execute() {
-        if (System.currentTimeMillis() >= this.lastBallRelease + this.pistonDelay) {
+        if (System.currentTimeMillis() >= this.lastBallRelease + this.pistonInterval) {
             this.ballDispenser.dispense();
             this.lastBallRelease = System.currentTimeMillis();
-        } else {
+        } else if (System.currentTimeMillis() >= this.lastBallRelease + pistonDelay) {
             this.ballDispenser.retain();
         }
     }

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4373.robot.subsystems;
 
 import com.ctre.CANTalon;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
 import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;

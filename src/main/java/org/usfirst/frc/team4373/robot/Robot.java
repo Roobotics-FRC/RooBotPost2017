@@ -23,7 +23,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void robotInit() {
-
         // PID tuning
         SmartDashboard.putNumber("kP", 0.0d);
         SmartDashboard.putNumber("kI", 0.0d);
@@ -36,7 +35,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("Auton Speed:", 0.5);
         SmartDashboard.putNumber("2017 Drive Speed", 0.3);
         SmartDashboard.putNumber("2017 Drive Time", 5);
-        SmartDashboard.putNumber("2017 Shoot Speed", 1);
+        SmartDashboard.putNumber("2017 Shoot Speed", 0.3);
         SmartDashboard.putNumber("2017 Shoot Delay", 3);
 
         SmartDashboard.putNumber("Shooter Power", 1);
@@ -64,12 +63,14 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopInit() {
+        Scheduler.getInstance().removeAll();
         OI.getOI().getGyro().reset();
         super.teleopInit();
     }
 
     @Override
     public void autonomousInit() {
+        Scheduler.getInstance().removeAll();
         if (autonCommand != null) {
             autonCommand.cancel();
         }

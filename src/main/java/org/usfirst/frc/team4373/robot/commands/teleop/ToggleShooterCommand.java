@@ -11,7 +11,7 @@ public class ToggleShooterCommand extends Command {
     private Shooter shooter;
 
     public ToggleShooterCommand() {
-        shooter = Shooter.getShooter();
+        requires(shooter = Shooter.getShooter());
     }
 
     @Override
