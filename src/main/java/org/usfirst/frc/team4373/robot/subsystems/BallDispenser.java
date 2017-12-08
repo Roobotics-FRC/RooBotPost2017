@@ -47,6 +47,6 @@ public class BallDispenser extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new LockSubsystemCommand(this));
+        setDefaultCommand(new LockSubsystemCommand(getBallDispenser()));
     }
 }

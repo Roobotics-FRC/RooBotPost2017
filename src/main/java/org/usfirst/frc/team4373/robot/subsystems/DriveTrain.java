@@ -93,7 +93,7 @@ public class DriveTrain extends Subsystem {
     @Override
     protected void initDefaultCommand() {
         // setDefaultCommand(TurnToPosition.getTurnToPosition());
-        setDefaultCommand(new LockSubsystemCommand(this));
+        setDefaultCommand(new LockSubsystemCommand(getDriveTrain()));
     }
 
 }

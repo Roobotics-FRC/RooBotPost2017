@@ -60,6 +60,6 @@ public class GearRelease extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new LockSubsystemCommand(this));
+        setDefaultCommand(new LockSubsystemCommand(getGearRelease()));
     }
 }
