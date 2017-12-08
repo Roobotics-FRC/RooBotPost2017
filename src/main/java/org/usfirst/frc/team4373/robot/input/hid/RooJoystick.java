@@ -12,9 +12,9 @@ public class RooJoystick extends Joystick {
     private static final double DEADZONE = 0.09;
     private IFilter filter = null;
 
-    public RooJoystick(int port, IFilter... filter) {
+    public RooJoystick(int port, IFilter filter) {
         super(port);
-        this.filter = filter.length > 0 ? filter[0] : null;
+        this.filter = filter;
     }
 
     private double filter(double val, IFilter filter) {
