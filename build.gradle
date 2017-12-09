@@ -68,10 +68,10 @@ jar {
     }
 }
 
-//noinspection GroovyAssignabilityCheck
-task deploy(dependsOn: ':build') << {
-    def isMacOS = OperatingSystem.current().isMacOsX()
-    def network = ''
+ext.isMacOS = OperatingSystem.current().isMacOsX()
+ext.network = ''
+
+def switchTo4373() {
     if (isMacOS) {
         Process curNetProc = Runtime.getRuntime().exec('networksetup -getairportnetwork en0')
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(curNetProc.getInputStream()))
@@ -79,21 +79,51 @@ task deploy(dependsOn: ':build') << {
         network = res.substring(23)
         curNetProc.waitFor()
         if (network != '4373_') {
+            println 'Connecting to 4373…'
             Process setProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 4373_ robotics')
             setProc.waitFor()
+            println 'Connected to 4373'
+        } else {
+            println 'Already connected to 4373'
         }
     }
+}
+
+def switchBack() {
+    if (isMacOS && network != '4373_') {
+        println 'Reconnecting to ' + network + '…'
+        Process resetProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 ' + network)
+        resetProc.waitFor()
+        println 'Reconnected to ' + network
+    }
+}
+
+//noinspection GroovyAssignabilityCheck
+task loadLibraries << {
+    switchTo4373()
     ssh.settings {
         knownHosts = allowAnyHosts
     }
-//    ssh.run{
-//        session(remotes.roborioAdmin) {
-//            put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
-//            execute "killall -q netconsole-host || :"
-//            put from: "${gradle.wpilibAntDir}/netconsole-host", into: '/usr/local/frc/bin'
-//            execute "chmod a+x /usr/local/frc/bin/netconsole-host"
-//        }
-//    }
+    println 'Sending library directories over SSH…'
+    ssh.run {
+        session(remotes.roborioAdmin) {
+            put from: fileTree(dir: gradle.wpilibLibDir), into: '/usr/local/frc/lib'
+            execute "killall -q netconsole-host || :"
+            put from: "${gradle.wpilibAntDir}/netconsole-host", into: '/usr/local/frc/bin'
+            execute "chmod a+x /usr/local/frc/bin/netconsole-host"
+        }
+    }
+    println 'Finished loading libraries'
+    switchBack()
+}
+
+//noinspection GroovyAssignabilityCheck
+task deploy(dependsOn: ':build') << {
+    switchTo4373()
+    ssh.settings {
+        knownHosts = allowAnyHosts
+    }
+    println 'Sending compiled code over SSH and restarting robot code…'
     ssh.run {
         session(remotes.roborioStandard) {
             put from: files(jar.getArchivePath().absolutePath), into: '/home/lvuser/FRCUserProgram.jar'
@@ -102,8 +132,6 @@ task deploy(dependsOn: ':build') << {
             execute "sync"
         }
     }
-    if (isMacOS && network != '4373_') {
-        Process resetProc = Runtime.getRuntime().exec('networksetup -setairportnetwork en0 ' + network)
-        resetProc.waitFor()
-    }
+    println 'Code successfully loaded and started'
+    switchBack()
 }

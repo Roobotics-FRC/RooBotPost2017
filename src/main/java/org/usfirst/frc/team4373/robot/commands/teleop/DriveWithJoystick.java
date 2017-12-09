@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.OI;
+import org.usfirst.frc.team4373.robot.Robot;
 import org.usfirst.frc.team4373.robot.RobotMap;
 import org.usfirst.frc.team4373.robot.input.hid.RooJoystick;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
@@ -46,13 +47,14 @@ public class DriveWithJoystick extends Command {
         requires(DriveTrain.getDriveTrain());
         driveTrain = DriveTrain.getDriveTrain();
         joystick = OI.getOI().getDriveJoystick();
-        forwardDirection = Direction.BACKWARD; // TODO: Put this back
+        forwardDirection = Direction.BACKWARD; // TODO: Put this back to forward
         setInterruptible(true);
     }
 
     @Override
     protected void execute() {
-        if (OI.getOI().getDriveJoystick().getRawButton(1)) {
+        if (OI.getOI().getDriveJoystick().getRawButton(
+                RobotMap.DIRECTION_SWITCHING_TOGGLE_BUTTON)) {
             switch (OI.getOI().getDriveJoystick().getPOV()) {
                 case 0:
                     forwardDirection = Direction.FORWARD;

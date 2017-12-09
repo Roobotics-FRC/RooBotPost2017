@@ -39,10 +39,25 @@ public class OI {
         }
         return oi;
     }
+  
+    private RooJoystick driveJoystick;
+    private RooJoystick operatorJoystick;
+    private Gyro gyro;
 
+
+    private OI() {
+        this.driveJoystick = new RooJoystick(
+                RobotMap.DRIVE_JOYSTICK_PORT, new PiecewiseFilter2());
+        this.operatorJoystick = new RooJoystick(
+                RobotMap.OPERATOR_JOYSTICK_PORT, new PiecewiseFilter2());
+        this.gyro = new AnalogGyro(
+                RobotMap.GYRO_CHANNEL);
+    }
+  
     public RooJoystick getDriveJoystick() { // we can use type deduction!
         return this.driveJoystick;
     }
+
 
     public RooJoystick getOperatorJoystick() {
         return this.operatorJoystick;

@@ -6,11 +6,15 @@ package org.usfirst.frc.team4373.robot;
  */
 public class RobotMap {
     // Joystick axes and buttons
+    public static final int DIRECTION_SWITCHING_TOGGLE_BUTTON = 1;
     public static final int DRIVE_JOYSTICK_HORIZONTAL_AXIS = 0;
     public static final int DRIVE_JOYSTICK_FORWARD_AXIS = 1;
     public static final int DRIVE_JOYSTICK_TWIST_AXIS = 2;
+    public static final int DRIVE_JOYSTICK_SHOOTER_AXIS = 3;
     public static final int OPERATOR_JOYSTICK_CLIMBER_BUTTON = 4;
     public static final int OPERATOR_JOYSTICK_GEAR_INTAKE_UP_BUTTON = 3;
+    public static final int OPERATOR_JOYSTICK_SHOOTER_BUTTON = 2;
+    public static final int OPERATOR_JOYSTICK_DISPENSER_BUTTON = 3;
 
     // Sensor ports
     public static final int DRIVE_JOYSTICK_PORT = 0;
@@ -26,6 +30,7 @@ public class RobotMap {
     public static final int MIDDLE_DRIVE_MOTOR_2 = 7;
     public static final int CLIMBER_MOTOR_1 = 9;
     public static final int CLIMBER_MOTOR_2 = 10;
+    public static final int SHOOTER_MOTOR = 9;
 
     // Pneumatics
     public static final int PCM_PORT = 15;

@@ -3,6 +3,7 @@ package org.usfirst.frc.team4373.robot.subsystems;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
+import org.usfirst.frc.team4373.robot.commands.LockSubsystemCommand;
 import org.usfirst.frc.team4373.robot.commands.teleop.ClimberCommand;
 
 /**
@@ -47,6 +48,6 @@ public class Climber extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new ClimberCommand());
+        setDefaultCommand(new LockSubsystemCommand(getClimber()));
     }
 }
