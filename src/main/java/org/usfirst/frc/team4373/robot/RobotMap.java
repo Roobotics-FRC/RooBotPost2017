@@ -30,7 +30,7 @@ public class RobotMap {
     public static final int MIDDLE_DRIVE_MOTOR_2 = 7;
     public static final int CLIMBER_MOTOR_1 = 9;
     public static final int CLIMBER_MOTOR_2 = 10;
-    public static final int SHOOTER_MOTOR = 9;
+    public static final int SHOOTER_MOTOR = 10;
 
     // Pneumatics
     public static final int PCM_PORT = 15;

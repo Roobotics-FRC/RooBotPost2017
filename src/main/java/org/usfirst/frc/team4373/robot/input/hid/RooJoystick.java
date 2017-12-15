@@ -18,6 +18,7 @@ import org.usfirst.frc.team4373.robot.input.filter.DoubleTypeFilter;
 public class RooJoystick<F extends DoubleTypeFilter> extends Joystick {
     private static final double DEADZONE = 0.09;
     private F filter = null;
+
     public RooJoystick(int port, F filter) {
         super(port);
         this.filter = filter;

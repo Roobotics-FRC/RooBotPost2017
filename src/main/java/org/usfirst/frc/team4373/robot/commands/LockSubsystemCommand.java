@@ -10,6 +10,10 @@ public class LockSubsystemCommand extends Command {
 
     private Subsystem lockedSubsystem;
 
+    /**
+     * Initializes a locking command for a subsystem.
+     * @param subsystem Subsystem to lock.
+     */
     public LockSubsystemCommand(Subsystem subsystem) {
         super("Lock" + subsystem.getName() + "Command");
         this.lockedSubsystem = subsystem;

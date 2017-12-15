@@ -27,9 +27,9 @@ public class Shooter extends Subsystem {
         if (power < 0) {
             power = 0;
         } else if (power > 1) {
-            power = 1;
+            power = -1;
         }
-        shooterTalon.set(power);
+        shooterTalon.set(-power);
     }
 
     /**
