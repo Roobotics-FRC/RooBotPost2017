@@ -3,6 +3,7 @@ package org.usfirst.frc.team4373.robot.subsystems;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
+import org.usfirst.frc.team4373.robot.commands.teleop.ScaleShooterCommand;
 import org.usfirst.frc.team4373.robot.commands.teleop.ToggleShooterCommand;
 
 public class Shooter extends Subsystem {
@@ -25,11 +26,11 @@ public class Shooter extends Subsystem {
      */
     public void setPower(double power) {
         if (power < 0) {
-            power = 0;
+            power = -0;
         } else if (power > 1) {
-            power = 1;
+            power = -1;
         }
-        shooterTalon.set(power);
+        shooterTalon.set(-power);
     }
 
     /**
