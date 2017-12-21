@@ -3,7 +3,7 @@ package org.usfirst.frc.team4373.robot.subsystems;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
-import org.usfirst.frc.team4373.robot.commands.LockSubsystemCommand;
+import org.usfirst.frc.team4373.robot.commands.teleop.ToggleShooterCommand;
 
 public class Shooter extends Subsystem {
 
@@ -41,6 +41,6 @@ public class Shooter extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new LockSubsystemCommand(getShooter()));
+        setDefaultCommand(new ToggleShooterCommand());
     }
 }

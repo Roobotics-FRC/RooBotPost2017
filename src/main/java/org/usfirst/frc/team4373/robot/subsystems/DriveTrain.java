@@ -3,7 +3,7 @@ package org.usfirst.frc.team4373.robot.subsystems;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
-import org.usfirst.frc.team4373.robot.commands.LockSubsystemCommand;
+import org.usfirst.frc.team4373.robot.commands.teleop.DriveWithJoystick;
 
 /**
  * Programmatic representation of physical drive train components.
@@ -93,7 +93,7 @@ public class DriveTrain extends Subsystem {
     @Override
     protected void initDefaultCommand() {
         // setDefaultCommand(TurnToPosition.getTurnToPosition());
-        setDefaultCommand(new LockSubsystemCommand(getDriveTrain()));
+        setDefaultCommand(DriveWithJoystick.getDriveWithJoystick());
     }
 
 }

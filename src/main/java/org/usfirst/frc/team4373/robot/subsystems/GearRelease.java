@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4373.robot.RobotMap;
-import org.usfirst.frc.team4373.robot.commands.LockSubsystemCommand;
 import org.usfirst.frc.team4373.robot.commands.teleop.GearReleaseCommand;
 
 /**
@@ -60,6 +59,6 @@ public class GearRelease extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new LockSubsystemCommand(getGearRelease()));
+        setDefaultCommand(new GearReleaseCommand());
     }
 }
