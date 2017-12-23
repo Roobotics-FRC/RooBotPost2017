@@ -44,7 +44,7 @@ public class TurnToPosition extends PIDCommand {
         if (SmartDashboard.getBoolean("Use Vision?", false)) {
             try {
                 SmartDashboard.putNumber("PID Setpoint", SmartDashboard.getNumber(
-                        "Camera_Angle_Offset") + OI.getOI().getAngleRelative());
+                        "Camera_Angle_Offset", 0) + OI.getOI().getAngleRelative());
             } catch (TableKeyNotDefinedException error) {
                 System.err.println("***COULD NOT GET NT VALUE: " + error.getLocalizedMessage()
                         + "***");

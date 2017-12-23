@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4373.robot.OI;
 import org.usfirst.frc.team4373.robot.Robot;
 import org.usfirst.frc.team4373.robot.RobotMap;
+import org.usfirst.frc.team4373.robot.input.hid.RooHIDDevice;
 import org.usfirst.frc.team4373.robot.input.hid.RooJoystick;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 
@@ -27,7 +28,7 @@ public class DriveWithJoystick extends Command {
     private Direction forwardDirection;
 
     private DriveTrain driveTrain;
-    private RooJoystick<?> joystick; // We don't know what happens with OI...
+    private RooHIDDevice joystick; // We don't know what happens with OI...
 
     private static DriveWithJoystick driveWithJoystick = null;
 

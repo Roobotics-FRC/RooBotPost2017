@@ -3,17 +3,25 @@ package org.usfirst.frc.team4373.robot;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.usfirst.frc.team4373.robot.input.filter.FineGrainedPiecewiseFilter;
+import org.usfirst.frc.team4373.robot.input.hid.HIDLogger;
+import org.usfirst.frc.team4373.robot.input.hid.RooHIDDevice;
 import org.usfirst.frc.team4373.robot.input.hid.RooJoystick;
+import org.usfirst.frc.team4373.robot.input.hid.RooPseudoJoystick;
+
+import java.util.ArrayList;
 
 /**
  * OI encapsulates various inputs and outputs.
  *
+ * @author aaplmath
  * @author Henry Pitcairn
  */
 public class OI {
     private static OI oi = null;
+    private boolean usePseudoJoysticks = false;
     private RooJoystick<FineGrainedPiecewiseFilter> driveJoystick;
     private RooJoystick operatorJoystick;
+    private RooPseudoJoystick pseudoJoystick;
     private Gyro gyro;
 
     private OI() {
@@ -41,12 +49,17 @@ public class OI {
         return oi;
     }
 
-    public RooJoystick getDriveJoystick() { // we can use type deduction!
-        return this.driveJoystick;
+    public void playBackHIDCapture(ArrayList<HIDLogger.Action> actions) {
+        this.pseudoJoystick = new RooPseudoJoystick(actions);
+        this.usePseudoJoysticks = true;
     }
 
-    public RooJoystick getOperatorJoystick() {
-        return this.operatorJoystick;
+    public RooHIDDevice getDriveJoystick() { // we can use type deduction!
+        return this.usePseudoJoysticks ? this.pseudoJoystick : this.driveJoystick;
+    }
+
+    public RooHIDDevice getOperatorJoystick() {
+        return this.usePseudoJoysticks ? this.pseudoJoystick : this.operatorJoystick;
     }
 
     public Gyro getGyro() {

@@ -22,7 +22,7 @@ public class ScaleShooterCommand extends Command {
     @Override
     protected void execute() {
         this.shooter.setPower(OI.getOI().getDriveJoystick()
-                .getRawAxis(RobotMap.DRIVE_JOYSTICK_SHOOTER_AXIS) + 1);
+                .getAxis(RobotMap.DRIVE_JOYSTICK_SHOOTER_AXIS) + 1);
     }
 
     @Override

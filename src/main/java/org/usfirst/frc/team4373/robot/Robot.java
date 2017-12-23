@@ -10,6 +10,7 @@ import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedAuton;
 import org.usfirst.frc.team4373.robot.commands.auton.TimeBasedGearAuton;
 import org.usfirst.frc.team4373.robot.commands.auton.TimedDriveForwardAuton;
 import org.usfirst.frc.team4373.robot.commands.teleop.TurnToPosition;
+import org.usfirst.frc.team4373.robot.input.hid.HIDLogger;
 import org.usfirst.frc.team4373.robot.subsystems.BallDispenser;
 import org.usfirst.frc.team4373.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4373.robot.subsystems.Shooter;
@@ -37,6 +38,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("2017 Drive Time", 5);
         SmartDashboard.putNumber("2017 Shoot Speed", 0.3);
         SmartDashboard.putNumber("2017 Shoot Delay", 3);
+        SmartDashboard.putString("2017 Joystick Profile File Name",
+                RobotMap.MOTION_PROFILE_OUTPUT_PATH);
 
         SmartDashboard.putNumber("Shooter Power", 1);
 
@@ -48,8 +51,11 @@ public class Robot extends IterativeRobot {
         autonChooser.addObject("RudimentaryGear", "rudimentaryGear");
         autonChooser.addObject("Drive Straight 5s", "drive5Seconds");
         autonChooser.addObject("2017 Drive and Shoot", "driveShoot");
+        autonChooser.addObject("2017 Joystick Profile", "joystickProfile");
         SmartDashboard.putData("Auton Mode Selector", autonChooser);
-        SmartDashboard.putNumber("Test Number", 42);
+
+        // Joystick profiling
+        SmartDashboard.putBoolean("Enable Joystick Recording", false);
 
         OI.getOI().getGyro().calibrate();
 
@@ -98,6 +104,13 @@ public class Robot extends IterativeRobot {
             case "driveShoot":
                 autonCommand = new TimedDriveForwardAuton(driveSpeed, driveTime);
                 break;
+            case "joystickProfile":
+                autonCommand = null;
+                String actionsFileName = SmartDashboard.getString(
+                        "2017 Joystick Profile File Name", RobotMap.MOTION_PROFILE_OUTPUT_PATH);
+                OI.getOI().playBackHIDCapture(HIDLogger.getHIDLogger()
+                        .deserializeActionsFromFile(actionsFileName));
+                break;
             default:
                 autonCommand = null;
         }
@@ -123,6 +136,22 @@ public class Robot extends IterativeRobot {
         if (SmartDashboard.getBoolean("Reset Gyro?", false)) {
             OI.getOI().getGyro().reset();
             SmartDashboard.putBoolean("Reset Gyro?", false);
+        }
+        // We need to use a field variable because fetching the SmartDashboard key every time we
+        // query HID devices is a waste of time
+        if (SmartDashboard.getBoolean("Enable Joystick Recording", false)) {
+            HIDLogger.isProfiling = true;
+            // Don't waste resources spinning up the HIDLogger when we make our first query
+            HIDLogger.getHIDLogger();
+        }
+    }
+
+    @Override
+    public void disabledPeriodic() {
+        // If we just profiled, stop profiling and write to disk
+        if (HIDLogger.isProfiling) {
+            HIDLogger.isProfiling = false;
+            HIDLogger.getHIDLogger().writeActionsToFile(RobotMap.MOTION_PROFILE_OUTPUT_PATH);
         }
     }
 

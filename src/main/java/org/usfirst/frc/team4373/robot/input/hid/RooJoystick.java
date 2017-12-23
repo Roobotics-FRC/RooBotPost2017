@@ -1,6 +1,8 @@
 package org.usfirst.frc.team4373.robot.input.hid;
 
 import edu.wpi.first.wpilibj.Joystick;
+import org.usfirst.frc.team4373.robot.Robot;
+import org.usfirst.frc.team4373.robot.RobotMap;
 import org.usfirst.frc.team4373.robot.input.filter.DoubleTypeFilter;
 
 /**
@@ -12,10 +14,11 @@ import org.usfirst.frc.team4373.robot.input.filter.DoubleTypeFilter;
  * 2) Rewrite as Singleton
  * 3) Remove custom filter capabilities
  *
+ * @author aaplmath
  * @author (Henry Pitcairn)
  * @author Rui-Jie Fang
  */
-public class RooJoystick<F extends DoubleTypeFilter> extends Joystick {
+public class RooJoystick<F extends DoubleTypeFilter> extends Joystick implements RooHIDDevice {
     private static final double DEADZONE = 0.09;
     private F filter = null;
 
@@ -54,10 +57,19 @@ public class RooJoystick<F extends DoubleTypeFilter> extends Joystick {
     }
 
     @Override
+    public boolean getRawButton(int button) {
+        boolean val = super.getRawButton(button);
+        if (HIDLogger.isProfiling) {
+            HIDLogger.getHIDLogger().logAction(new HIDLogger.Action(
+                    HIDLogger.ActorType.Button, button, val ? 1 : 0));
+        }
+        return val;
+    }
+
+    @Override
     public double getAxis(Joystick.AxisType axis) {
         return this.getAxis(axis.value);
     }
-
 
     /**
      * Returns the filtered value of a joystick access.
@@ -66,20 +78,41 @@ public class RooJoystick<F extends DoubleTypeFilter> extends Joystick {
      * @return the filtered value of the axis
      */
     public double getAxis(int axis) {
+        double val = 0.0;
         switch (axis) {
             case 0:
-                return this.rooGetX();
+                val = this.rooGetX();
+                break;
             case 1:
-                return this.rooGetY();
+                val = this.rooGetY();
+                break;
             case 2:
-                return this.rooGetZ();
+                val = this.rooGetZ();
+                break;
             case 3:
-                return this.rooGetTwist();
+                val = this.rooGetTwist();
+                break;
             case 4:
-                return this.rooGetThrottle();
+                val = this.rooGetThrottle();
+                break;
             default:
-                return 0.0;
+                break;
         }
+        if (HIDLogger.isProfiling) {
+            HIDLogger.getHIDLogger().logAction(
+                    new HIDLogger.Action(HIDLogger.ActorType.Axis, axis, val));
+        }
+        return val;
+    }
+
+    @Override
+    public int getPOV() {
+        int val = super.getPOV();
+        if (HIDLogger.isProfiling) {
+            HIDLogger.getHIDLogger().logAction(new HIDLogger.Action(
+                    HIDLogger.ActorType.POV, val, 1)); // the actorValue doesn't matter
+        }
+        return val;
     }
 
     /**
