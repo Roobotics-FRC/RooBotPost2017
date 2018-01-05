@@ -152,6 +152,7 @@ public class Robot extends IterativeRobot {
         if (HIDLogger.isProfiling) {
             HIDLogger.isProfiling = false;
             HIDLogger.getHIDLogger().writeActionsToFile(RobotMap.MOTION_PROFILE_OUTPUT_PATH);
+            SmartDashboard.putBoolean("Enable Joystick Recording", false);
         }
     }
 

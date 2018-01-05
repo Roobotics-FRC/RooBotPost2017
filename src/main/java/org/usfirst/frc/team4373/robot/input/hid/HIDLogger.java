@@ -6,9 +6,11 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 /**
@@ -20,7 +22,10 @@ import java.util.stream.Stream;
  */
 public class HIDLogger {
     public static boolean isProfiling = false;
-    private ArrayList<Action> actionLog;
+    private ConcurrentHashMap<Integer, ArrayDeque<Double>> axes;
+    private ConcurrentHashMap<Integer, ArrayDeque<Boolean>> buttons;
+    private ArrayDeque<Integer> pov;
+    private ArrayDeque<Action> actionLog;
 
     private static HIDLogger logger;
 
@@ -38,7 +43,10 @@ public class HIDLogger {
     }
 
     private HIDLogger() {
-        this.actionLog = new ArrayList<>();
+        this.actionLog = new ArrayDeque<>();
+        this.axes = new ConcurrentHashMap<>();
+        this.buttons = new ConcurrentHashMap<>();
+        this.pov = new ArrayDeque<>();
     }
 
     protected enum ActorType {
@@ -78,6 +86,39 @@ public class HIDLogger {
         actionLog.add(action);
     }
 
+    // TODO: Switch to proper logging
+    public void logAction(ActorType type, int id, double value) {
+        switch (type) {
+            case Axis:
+                ArrayDeque<Double> axis = axes.get(id);
+                if (axis == null) {
+                    axis = new ArrayDeque<>();
+                    axis.add(value);
+                    axes.put(id, axis);
+                } else {
+                    axis.add(value);
+                }
+                break;
+            case Button:
+                ArrayDeque<Boolean> button = buttons.get(id);
+                // Coerce 1 -> true and 0 -> false
+                boolean logVal = value == 1;
+                if (button == null) {
+                    button = new ArrayDeque<>();
+                    button.add(logVal);
+                    buttons.put(id, button);
+                } else {
+                    button.add(logVal);
+                }
+                break;
+            case POV:
+                pov.add(id);
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * Reads a joystick profile file into an action array for playback.
      * @param fileName the file from which to load the profile
@@ -100,8 +141,7 @@ public class HIDLogger {
     }
 
     /**
-     * Writes a list of the recorded actions to a file. Files should be stored in the resources
-     * folder so that they will be deployed by the Gradle script.
+     * Writes a list of the recorded actions to a file.
      * @param fileName the name of the file to which to write.
      */
     public synchronized void writeActionsToFile(String fileName) {

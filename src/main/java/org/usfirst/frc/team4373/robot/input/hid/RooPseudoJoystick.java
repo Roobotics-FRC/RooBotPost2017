@@ -2,7 +2,7 @@ package org.usfirst.frc.team4373.robot.input.hid;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A fake joystick for playing back joystick captures.
@@ -11,8 +11,8 @@ import java.util.HashMap;
  */
 public class RooPseudoJoystick implements RooHIDDevice {
 
-    private HashMap<Integer, ArrayDeque<Double>> axes;
-    private HashMap<Integer, ArrayDeque<Boolean>> buttons;
+    private ConcurrentHashMap<Integer, ArrayDeque<Double>> axes;
+    private ConcurrentHashMap<Integer, ArrayDeque<Boolean>> buttons;
     private ArrayDeque<Integer> pov;
 
     /**
@@ -22,9 +22,9 @@ public class RooPseudoJoystick implements RooHIDDevice {
      * @param actions the array of HIDLogger actions to play back.
      */
     public RooPseudoJoystick(ArrayList<HIDLogger.Action> actions) {
-        axes = new HashMap<>();
-        buttons = new HashMap<>();
-        pov = new ArrayDeque<>();
+        this.axes = new ConcurrentHashMap<>();
+        this.buttons = new ConcurrentHashMap<>();
+        this.pov = new ArrayDeque<>();
 
         for (HIDLogger.Action action: actions) {
             switch (action.actorType) {
