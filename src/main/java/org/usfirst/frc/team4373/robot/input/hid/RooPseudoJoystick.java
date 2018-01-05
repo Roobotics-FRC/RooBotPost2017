@@ -22,6 +22,10 @@ public class RooPseudoJoystick implements RooHIDDevice {
      * @param actions the array of HIDLogger actions to play back.
      */
     public RooPseudoJoystick(ArrayList<HIDLogger.Action> actions) {
+        axes = new HashMap<>();
+        buttons = new HashMap<>();
+        pov = new ArrayDeque<>();
+
         for (HIDLogger.Action action: actions) {
             switch (action.actorType) {
                 case Axis:
